@@ -5,14 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import genadimk.bookreader.R
+import genadimk.bookreader.ui.floatingButton.AppFloatingButton
+import genadimk.bookreader.ui.floatingButton.BookRemover
 
 class BookListViewAdapter() : RecyclerView.Adapter<BookListViewAdapter.ItemViewHolder>() {
-
-    private val data = BookDataList.data
+    companion object {
+        val data = BookDataList.data
+    }
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val bookCard: MaterialCardView = view.findViewById(R.id.book_item_card) as MaterialCardView
@@ -38,8 +40,8 @@ class BookListViewAdapter() : RecyclerView.Adapter<BookListViewAdapter.ItemViewH
 
         item.bookCard!!.setOnLongClickListener {
             item.bookCard!!.toggle()
-
-
+            item.isChecked = true
+            AppFloatingButton.updateButton(BookRemover)
             true
         }
     }
