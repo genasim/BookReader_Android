@@ -7,6 +7,7 @@ import genadimk.bookreader.observer.Observable
 object ButtonAdder :
     ButtonHandler,
     Observable by Broadcaster() {
+
     override val imageRes: Int
         get() = R.drawable.ic_add
 

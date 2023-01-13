@@ -8,11 +8,11 @@ data class Book(
     val bookName: String = "Clean code",
     val bookAuthor: String = "Author",
 ) {
-    var bookCard: MaterialCardView? = null
+    lateinit var bookCard: MaterialCardView
 }
 
 object BookDataList {
     val data = mutableListOf(
-        Book(), Book(), Book()
+        Book(bookName = "11111"), Book(bookName = "22222"), Book(bookName = "33333"), Book(bookName = "44444")
     )
 }
