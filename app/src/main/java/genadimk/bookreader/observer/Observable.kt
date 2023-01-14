@@ -1,36 +1,33 @@
 package genadimk.bookreader.observer
 
 interface Observable {
-//    val observers: MutableList<Observer>
-//
-//    fun subscribe(observer: Observer)
-//    fun unsubscribe(observer: Observer)
-//    fun sendUpdateEvent()
-    val observers: MutableList<()->Unit>
+    val observers: MutableList<Observer>
 
-    fun subscribe(newOpr: () -> Unit)
-    fun unsubscribe(opr: () -> Unit)
+    fun subscribe(observer: Observer)
+
+    fun unsubscribe(observer: Observer)
+
     fun sendUpdateEvent()
+
+    data class Arguments(
+        val args: List<Any>
+    )
 }
 
 class Broadcaster : Observable {
-//    private val _observers: MutableList<Observer> = mutableListOf()
-//    override val observers: MutableList<Observer>
-//        get() = _observers
-
-    private val _observers: MutableList<() -> Unit> = mutableListOf()
-    override val observers: MutableList<() -> Unit>
+    private val _observers: MutableList<Observer> = mutableListOf()
+    override val observers: MutableList<Observer>
         get() = _observers
 
-    override fun subscribe(newOpr: () -> Unit) {
-        observers.add(newOpr)
+    override fun subscribe(observer: Observer) {
+        observers.add(observer)
     }
 
-    override fun unsubscribe(opr: () -> Unit) {
-        observers.remove(opr)
+    override fun unsubscribe(observer: Observer) {
+        observers.remove(observer)
     }
 
     override fun sendUpdateEvent() {
-        observers.forEach { it.invoke() }
+        TODO("Should not use default empty implementation")
     }
 }

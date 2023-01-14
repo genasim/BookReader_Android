@@ -15,13 +15,12 @@ import genadimk.bookreader.ui.floatingButton.ButtonRemove
 class BookListViewAdapter :
     RecyclerView.Adapter<BookListViewAdapter.ItemViewHolder>() {
 
-    val data
+    private val data
         get() = BookDataList.data
 
-    //  Subscribe class to different broadcasters
     init {
-        ButtonRemove.subscribe(this)
-        ButtonAdder.subscribe(this::notifyDataSetChanged)
+        ButtonRemove.adapter = this
+        ButtonAdder.adapter = this
     }
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
