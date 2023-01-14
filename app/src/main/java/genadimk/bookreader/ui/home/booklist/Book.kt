@@ -1,16 +1,18 @@
 package genadimk.bookreader.ui.home.booklist
 
+import com.google.android.material.card.MaterialCardView
 import genadimk.bookreader.R
 
-data class Book (
-    val bookCover: Int = R.drawable.ic_launcher_foreground,
+data class Book(
+    val bookCover: Int = R.drawable.ic_launcher_background,
     val bookName: String = "Clean code",
-    val bookAuthor: String = "Author"
-)
-
+    val bookAuthor: String = "Author",
+) {
+    lateinit var bookCard: MaterialCardView
+}
 
 object BookDataList {
-    val data: List<Book> =  mutableListOf(
-        Book(), Book(), Book()
+    val data = mutableListOf(
+        Book(bookName = "11111"), Book(bookName = "22222"), Book(bookName = "33333"), Book(bookName = "44444")
     )
 }
