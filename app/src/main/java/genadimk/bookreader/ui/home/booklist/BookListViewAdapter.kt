@@ -40,6 +40,7 @@ class BookListViewAdapter :
         val item = data[position]
         holder.apply {
             item.bookCard = this.bookCard
+            item.bookCard.isChecked = false
             bookCover.setImageResource(item.bookCover)
             bookName.text = item.bookName
             bookAuthor.text = item.bookAuthor
@@ -57,5 +58,6 @@ class BookListViewAdapter :
     }
 
     override fun getItemCount(): Int = data.size
+
 
 }
