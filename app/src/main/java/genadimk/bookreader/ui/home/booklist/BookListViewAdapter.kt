@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import genadimk.bookreader.R
 import genadimk.bookreader.ui.floatingButton.AppFloatingButton
+import genadimk.bookreader.ui.home.HomeFragmentDirections
 
 class BookListViewAdapter :
     RecyclerView.Adapter<BookListViewAdapter.ItemViewHolder>() {
@@ -61,7 +62,8 @@ class BookListViewAdapter :
         }
 
         item.bookCard?.setOnClickListener {
-            // TODO: open reading fragment
+//            val action = HomeFragmentDirections.actionNavHomeToNavReadview()
+//            holder.view.
         }
     }
 
