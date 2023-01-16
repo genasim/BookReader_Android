@@ -8,7 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import genadimk.bookreader.databinding.FragmentHomeBinding
 import genadimk.bookreader.ui.floatingButton.AppFloatingButton
-import genadimk.bookreader.ui.floatingButton.ButtonAdder
+import genadimk.bookreader.ui.floatingButton.AppFloatingButton.Companion.buttonAdder
+import genadimk.bookreader.ui.floatingButton.ButtonAdd
 import genadimk.bookreader.ui.home.booklist.BookListViewAdapter
 
 class HomeFragment : Fragment() {
@@ -35,7 +36,7 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        AppFloatingButton.updateButton(ButtonAdder)
+        AppFloatingButton.apply { buttonHandler = buttonAdder }
     }
 
     override fun onDestroyView() {

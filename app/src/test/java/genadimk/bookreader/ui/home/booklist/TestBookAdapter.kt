@@ -10,16 +10,8 @@ import com.google.android.material.card.MaterialCardView
 import genadimk.bookreader.R
 import genadimk.bookreader.ui.floatingButton.AppFloatingButton
 
-class BookListViewAdapter :
-    RecyclerView.Adapter<BookListViewAdapter.ItemViewHolder>() {
-
-    private val data
-        get() = BookDataList.data
-
-    init {
-        AppFloatingButton.buttonRemover.adapter = this
-        AppFloatingButton.buttonAdder.adapter = this
-    }
+class TestBookAdapter(private val data: List<Book>) :
+    RecyclerView.Adapter<TestBookAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val bookCard: MaterialCardView = view.findViewById(R.id.book_item_card) as MaterialCardView
@@ -47,15 +39,12 @@ class BookListViewAdapter :
         }
 
         item.bookCard?.setOnLongClickListener {
-            item.apply {
-                isChecked = !isChecked
-                bookCard?.isChecked = isChecked
-            }
+            item.apply { isChecked = !isChecked }
+            item.bookCard?.toggle()
             AppFloatingButton.apply { buttonHandler = buttonRemover }
 
             if (!BookDataList.data.any { it.bookCard?.isChecked == true })
                 AppFloatingButton.apply { buttonHandler = buttonAdder }
-
 
             true
         }
@@ -66,5 +55,4 @@ class BookListViewAdapter :
     }
 
     override fun getItemCount(): Int = data.size
-
 }

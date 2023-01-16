@@ -12,7 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import genadimk.bookreader.databinding.ActivityMainBinding
 import genadimk.bookreader.ui.floatingButton.AppFloatingButton
-import genadimk.bookreader.ui.floatingButton.ButtonAdder
+import genadimk.bookreader.ui.floatingButton.ButtonAdd
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.appBarMain.toolbar)
 
         AppFloatingButton.button = binding.appBarMain.floatingButton
-        AppFloatingButton.updateButton(ButtonAdder)
+        AppFloatingButton.apply { buttonHandler = buttonAdder }
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView: NavigationView = binding.navView
@@ -55,3 +55,6 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
+
+val Any.TAG: String
+    get() = javaClass.simpleName
