@@ -9,11 +9,7 @@
         android:id="@+id/nav_home"
         android:name="genadimk.bookreader.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_nav_home_to_nav_readview"
-            app:destination="@id/nav_readview" />
-    </fragment>
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_readview"
@@ -26,4 +22,7 @@
         android:name="genadimk.bookreader.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+    <action
+        android:id="@+id/action_global_nav_readview"
+        app:destination="@id/nav_readview" />
 </navigation>
