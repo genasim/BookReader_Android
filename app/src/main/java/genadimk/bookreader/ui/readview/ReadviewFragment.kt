@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import genadimk.bookreader.databinding.FragmentReadviewBinding
+import genadimk.bookreader.ui.floatingButton.AppFloatingButton
 
 class ReadviewFragment : Fragment() {
 
@@ -31,6 +32,8 @@ class ReadviewFragment : Fragment() {
         readviewViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
+        AppFloatingButton.disable()
 
         return root
     }

@@ -8,8 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import genadimk.bookreader.databinding.FragmentHomeBinding
 import genadimk.bookreader.ui.floatingButton.AppFloatingButton
-import genadimk.bookreader.ui.floatingButton.AppFloatingButton.Companion.buttonAdder
-import genadimk.bookreader.ui.floatingButton.ButtonAdd
 import genadimk.bookreader.ui.home.booklist.BookListViewAdapter
 
 class HomeFragment : Fragment() {
@@ -31,6 +29,8 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         binding.homeListView.adapter = BookListViewAdapter()
+
+        AppFloatingButton.enable()
 
         return root
     }
