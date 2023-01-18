@@ -7,14 +7,12 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
+            android:menuCategory="system"
             android:title="@string/menu_home" />
         <item
             android:id="@+id/nav_readview"
             android:icon="@drawable/ic_menu_gallery"
+            android:menuCategory="system"
             android:title="@string/menu_readview" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
     </group>
 </menu>

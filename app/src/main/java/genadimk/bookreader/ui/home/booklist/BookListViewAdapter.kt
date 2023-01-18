@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.navigation.NavDirections
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import genadimk.bookreader.MobileNavigationDirections
@@ -60,7 +59,6 @@ class BookListViewAdapter :
 
             if (!BookDataList.data.any { it.bookCard?.isChecked == true })
                 AppFloatingButton.apply { buttonHandler = buttonAdder }
-
 
             true
         }
