@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import genadimk.bookreader.R
+import genadimk.bookreader.booklist.Book
+import genadimk.bookreader.booklist.BookDataList
 import genadimk.bookreader.ui.floatingButton.AppFloatingButton
 
 class TestBookAdapter(private val data: List<Book>) :

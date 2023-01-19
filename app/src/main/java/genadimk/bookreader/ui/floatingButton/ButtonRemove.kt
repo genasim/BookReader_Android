@@ -2,8 +2,8 @@ package genadimk.bookreader.ui.floatingButton
 
 import androidx.recyclerview.widget.RecyclerView
 import genadimk.bookreader.R
-import genadimk.bookreader.ui.home.booklist.Book
-import genadimk.bookreader.ui.home.booklist.BookDataList
+import genadimk.bookreader.booklist.Book
+import genadimk.bookreader.booklist.BookDataList
 import java.util.function.Predicate
 
 class ButtonRemove(val data: MutableList<Book> = BookDataList.data) :

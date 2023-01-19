@@ -1,4 +1,4 @@
-package genadimk.bookreader.ui.home.booklist
+package genadimk.bookreader.booklist
 
 import android.view.LayoutInflater
 import android.view.View
@@ -66,6 +66,7 @@ class BookListViewAdapter :
         item.bookCard?.setOnClickListener {
             val action: NavDirections = MobileNavigationDirections.actionGlobalNavReadview()
             holder.view.findNavController().navigate(action)
+            BookDataList.currentBook = item
         }
     }
 

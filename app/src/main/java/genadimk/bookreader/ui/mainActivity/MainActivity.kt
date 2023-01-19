@@ -1,22 +1,26 @@
-package genadimk.bookreader
+package genadimk.bookreader.ui.mainActivity
 
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import com.google.android.material.navigation.NavigationView
+import genadimk.bookreader.R
 import genadimk.bookreader.databinding.ActivityMainBinding
 import genadimk.bookreader.ui.floatingButton.AppFloatingButton
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
+
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +39,10 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_readview, R.id.nav_slideshow
+                R.id.nav_home, R.id.nav_readview
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
-
         //  Bind drawer items to their destinations
         val navView: NavigationView = binding.navView
         navView.setupWithNavController(navController)

@@ -1,7 +1,7 @@
 package genadimk.bookreader.ui.floatingButton
 
 import com.google.common.truth.Truth.assertThat
-import genadimk.bookreader.ui.home.booklist.Book
+import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.ui.home.booklist.TestBookAdapter
 import org.junit.Before
 import org.junit.Test

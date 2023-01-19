@@ -1,4 +1,4 @@
-package genadimk.bookreader.ui.home.booklist
+package genadimk.bookreader.booklist
 
 import com.google.android.material.card.MaterialCardView
 import genadimk.bookreader.R
@@ -19,4 +19,6 @@ object BookDataList {
         Book(bookName = "33333"),
         Book(bookName = "44444")
     )
+
+    var currentBook: Book = data[0]
 }
