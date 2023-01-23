@@ -17,7 +17,10 @@ class BookListViewAdapter :
     RecyclerView.Adapter<BookListViewAdapter.ItemViewHolder>() {
 
     private val data
-        get() = BookDataList.data
+        get() = BookRepository.data
+
+    lateinit var parent: RecyclerView
+        private set
 
     init {
         AppFloatingButton.buttonRemover.adapter = this
@@ -57,7 +60,7 @@ class BookListViewAdapter :
             }
             AppFloatingButton.apply { buttonHandler = buttonRemover }
 
-            if (!BookDataList.data.any { it.bookCard?.isChecked == true })
+            if (!BookRepository.data.any { it.bookCard?.isChecked == true })
                 AppFloatingButton.apply { buttonHandler = buttonAdder }
 
             true
@@ -66,8 +69,13 @@ class BookListViewAdapter :
         item.bookCard?.setOnClickListener {
             val action: NavDirections = MobileNavigationDirections.actionGlobalNavReadview()
             holder.view.findNavController().navigate(action)
-            BookDataList.currentBook = item
+            BookRepository.currentBook = item
         }
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        parent = recyclerView
     }
 
     override fun getItemCount(): Int = data.size

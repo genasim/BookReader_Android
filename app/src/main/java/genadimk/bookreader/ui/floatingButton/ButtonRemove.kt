@@ -3,10 +3,11 @@ package genadimk.bookreader.ui.floatingButton
 import androidx.recyclerview.widget.RecyclerView
 import genadimk.bookreader.R
 import genadimk.bookreader.booklist.Book
-import genadimk.bookreader.booklist.BookDataList
+import genadimk.bookreader.booklist.BookListViewAdapter
+import genadimk.bookreader.booklist.BookRepository
 import java.util.function.Predicate
 
-class ButtonRemove(val data: MutableList<Book> = BookDataList.data) :
+class ButtonRemove(val data: MutableList<Book> = BookRepository.data) :
     ButtonHandler {
 
     lateinit var adapter: RecyclerView.Adapter<*>
@@ -29,8 +30,9 @@ class ButtonRemove(val data: MutableList<Book> = BookDataList.data) :
     }
 
     fun removeItem(item: Book) {
-        val position = data.indexOf(item)
-        data.remove(item)
-        adapter.notifyItemRemoved(position)
+        with(adapter as BookListViewAdapter) {
+            notifyItemRemoved(BookRepository.removeBook(item))
+//            parent.scrollToPosition(0)
+        }
     }
 }

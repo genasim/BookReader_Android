@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import genadimk.bookreader.booklist.BookDataList
+import genadimk.bookreader.booklist.BookRepository
 import genadimk.bookreader.databinding.FragmentReadviewBinding
 import genadimk.bookreader.ui.floatingButton.AppFloatingButton
 import genadimk.bookreader.ui.mainActivity.MainActivity
@@ -36,7 +36,7 @@ class ReadviewFragment : Fragment() {
             textView.text = it
         }
 
-        (activity as MainActivity).supportActionBar?.title = BookDataList.currentBook.bookName
+        (activity as MainActivity).supportActionBar?.title = BookRepository.currentBook.bookName
 
         AppFloatingButton.disable()
 

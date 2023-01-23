@@ -11,14 +11,3 @@ data class Book(
 ) {
     var bookCard: MaterialCardView? = null
 }
-
-object BookDataList {
-    val data = mutableListOf(
-        Book(bookName = "11111"),
-        Book(bookName = "22222"),
-        Book(bookName = "33333"),
-        Book(bookName = "44444")
-    )
-
-    var currentBook: Book = data[0]
-}
