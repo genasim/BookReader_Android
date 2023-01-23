@@ -1,6 +1,5 @@
 package genadimk.bookreader.ui.floatingButton
 
-import android.opengl.Visibility
 import android.view.View
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -24,8 +23,12 @@ class AppFloatingButton {
                 }
             }
 
-        fun disable() { button?.visibility = View.GONE }
+        fun disable() {
+            button?.visibility = View.GONE
+        }
 
-        fun enable() { button?.visibility = View.VISIBLE }
+        fun enable() {
+            button?.visibility = View.VISIBLE
+        }
     }
 }

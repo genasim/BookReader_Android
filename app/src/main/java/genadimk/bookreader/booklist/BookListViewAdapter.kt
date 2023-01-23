@@ -17,7 +17,7 @@ class BookListViewAdapter :
     RecyclerView.Adapter<BookListViewAdapter.ItemViewHolder>() {
 
     private val data
-        get() = BookRepository.data
+        get() = BookRepository.getRepository()
 
     lateinit var parent: RecyclerView
         private set
@@ -53,6 +53,12 @@ class BookListViewAdapter :
             isChecked = item.isChecked
         }
 
+        setLongClickListener(item)
+
+        setClickListener(item, holder)
+    }
+
+    private fun setLongClickListener(item: Book) {
         item.bookCard?.setOnLongClickListener {
             item.apply {
                 isChecked = !isChecked
@@ -60,12 +66,14 @@ class BookListViewAdapter :
             }
             AppFloatingButton.apply { buttonHandler = buttonRemover }
 
-            if (!BookRepository.data.any { it.bookCard?.isChecked == true })
+            if (data.all { it.bookCard?.isChecked == false })
                 AppFloatingButton.apply { buttonHandler = buttonAdder }
 
             true
         }
+    }
 
+    private fun setClickListener(item: Book, holder: ItemViewHolder) {
         item.bookCard?.setOnClickListener {
             val action: NavDirections = MobileNavigationDirections.actionGlobalNavReadview()
             holder.view.findNavController().navigate(action)
@@ -74,7 +82,6 @@ class BookListViewAdapter :
     }
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
         parent = recyclerView
     }
 
