@@ -1,6 +1,6 @@
 package genadimk.bookreader.booklist
 
-interface BookData {
+interface Repository {
     var currentBook: Book
 
     fun getRepository(): List<Book>

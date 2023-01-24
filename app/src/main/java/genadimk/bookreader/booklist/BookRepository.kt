@@ -1,6 +1,6 @@
 package genadimk.bookreader.booklist
 
-object BookRepository: BookData {
+object BookRepository: Repository {
     private val data = mutableListOf(
         Book(bookName = "11111"),
         Book(bookName = "22222"),
