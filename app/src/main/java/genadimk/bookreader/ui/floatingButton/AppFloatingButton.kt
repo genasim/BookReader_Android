@@ -5,8 +5,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class AppFloatingButton {
     companion object {
-        val buttonRemover: ButtonRemove = ButtonRemove()
-        val buttonAdder: ButtonAdd = ButtonAdd()
+        val buttonRemover = ButtonRemove()
+        val buttonAdder = ButtonAdd()
 
         var button: FloatingActionButton? = null
             set(value) {
@@ -14,7 +14,7 @@ class AppFloatingButton {
                 else return
             }
 
-        var buttonHandler: ButtonHandler = ButtonAdd()
+        var buttonHandler: ButtonHandler = buttonAdder
             set(value) {
                 field = value
                 button?.setImageResource(value.imageRes)
