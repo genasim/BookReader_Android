@@ -2,26 +2,24 @@ package genadimk.bookreader.ui.floatingButton
 
 import androidx.recyclerview.widget.RecyclerView
 import genadimk.bookreader.R
-import genadimk.bookreader.booklist.Book
-import genadimk.bookreader.booklist.BookDataList.data
+import genadimk.bookreader.observer.Broadcaster
+import genadimk.bookreader.observer.Observable
 
 class ButtonAdd :
     ButtonHandler {
 
-    lateinit var adapter: RecyclerView.Adapter<*>
+    companion object : Observable by Broadcaster()
 
-    @Deprecated("Temporary usage for new items' name; items will have different names regardless")
-    private var count: Int = 0
+    lateinit var adapter: RecyclerView.Adapter<*>
 
     override val imageRes: Int
         get() = R.drawable.ic_add
 
     override fun clickButton() {
-        addItem(Book(bookName = count++.toString()))
+        addItem()
     }
 
-    private fun addItem(item: Book) {
-        data.add(item)
-        adapter.notifyItemInserted(data.size)
+    private fun addItem() {
+        sendUpdateEvent()
     }
 }

@@ -1,13 +1,12 @@
 package genadimk.bookreader.ui.floatingButton
 
-import android.opengl.Visibility
 import android.view.View
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class AppFloatingButton {
     companion object {
-        val buttonRemover: ButtonRemove = ButtonRemove()
-        val buttonAdder: ButtonAdd = ButtonAdd()
+        val buttonRemover = ButtonRemove()
+        val buttonAdder = ButtonAdd()
 
         var button: FloatingActionButton? = null
             set(value) {
@@ -15,7 +14,7 @@ class AppFloatingButton {
                 else return
             }
 
-        var buttonHandler: ButtonHandler = ButtonAdd()
+        var buttonHandler: ButtonHandler = buttonAdder
             set(value) {
                 field = value
                 button?.setImageResource(value.imageRes)
@@ -24,8 +23,12 @@ class AppFloatingButton {
                 }
             }
 
-        fun disable() { button?.visibility = View.GONE }
+        fun disable() {
+            button?.visibility = View.GONE
+        }
 
-        fun enable() { button?.visibility = View.VISIBLE }
+        fun enable() {
+            button?.visibility = View.VISIBLE
+        }
     }
 }

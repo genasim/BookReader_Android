@@ -3,13 +3,16 @@ package genadimk.bookreader.ui.floatingButton
 import androidx.recyclerview.widget.RecyclerView
 import genadimk.bookreader.R
 import genadimk.bookreader.booklist.Book
-import genadimk.bookreader.booklist.BookDataList
+import genadimk.bookreader.booklist.Repository
+import genadimk.bookreader.booklist.BookListViewAdapter
+import genadimk.bookreader.booklist.BookRepository
 import java.util.function.Predicate
 
-class ButtonRemove(val data: MutableList<Book> = BookDataList.data) :
+class ButtonRemove() :
     ButtonHandler {
 
     lateinit var adapter: RecyclerView.Adapter<*>
+    private val bookData: Repository = BookRepository
 
     override val imageRes: Int
         get() = R.drawable.ic_delete
@@ -18,19 +21,18 @@ class ButtonRemove(val data: MutableList<Book> = BookDataList.data) :
         removeCheckedItems()
     }
 
-    fun removeCheckedItems() {
-//        Log.i(TAG, "BEFORE  -> button data size: ${data.size} | adapter data size: ${adapter.itemCount}")
+    private fun removeCheckedItems() {
         val predicate = Predicate { bookItem: Book -> bookItem.isChecked }
-        data.filter { predicate.test(it) }
+        bookData.getRepository()
+            .filter { predicate.test(it) }
             .forEach { removeItem(it) }
 
         AppFloatingButton.apply { buttonHandler = buttonAdder }
-//        Log.i(TAG, "AFTER   -> button data size: ${data.size} | adapter data size: ${adapter.itemCount}")
     }
 
-    fun removeItem(item: Book) {
-        val position = data.indexOf(item)
-        data.remove(item)
-        adapter.notifyItemRemoved(position)
+    private fun removeItem(item: Book) {
+        with(adapter as BookListViewAdapter) {
+            notifyItemRemoved(bookData.removeItem(item))
+        }
     }
 }
