@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.itextpdf.text.pdf.PdfReader
 import genadimk.bookreader.booklist.BookListViewAdapter
+import genadimk.bookreader.booklist.BookRepository
 import genadimk.bookreader.databinding.FragmentHomeBinding
 import genadimk.bookreader.observer.Observable
 import genadimk.bookreader.observer.Observer
@@ -28,8 +28,7 @@ class HomeFragment : Fragment(), Observer {
 
     private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
         val file = File(it.toString())
-        val pdfFile = PdfReader(file.inputStream())
-//        BookRepository.addItem()
+        BookRepository.addItem(file)
     }
 
     init {

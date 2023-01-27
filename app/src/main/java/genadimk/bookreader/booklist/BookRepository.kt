@@ -1,24 +1,39 @@
 package genadimk.bookreader.booklist
 
+import com.itextpdf.text.pdf.PdfReader
+import com.itextpdf.text.pdf.parser.PdfTextExtractor
+import java.io.File
+
 object BookRepository: Repository {
     private val data = mutableListOf(
-        Book(bookName = "11111"),
-        Book(bookName = "22222"),
-        Book(bookName = "33333"),
-        Book(bookName = "44444")
+        Book.Builder().name("11111").build(),
+        Book.Builder().name("22222").build(),
+        Book.Builder().name("33333").build(),
+        Book.Builder().name("44444").build()
     )
-
-    @Deprecated("Temporary usage for new items' name; items will have different names regardless")
-    private var count: Int = 0
 
     override var currentBook: Book = data[0]
 
     override fun getRepository(): List<Book> = data.toList()
 
-    override fun addItem(): Int {
-        val item = Book(bookName = count++.toString())
+    override fun addItem(file: File): Int {
+        val item = createBookItem(file)
         data.add(0, item)
         return data.indexOf(item)
+    }
+
+    private fun createBookItem(file: File): Book {
+        file.readBytes()
+        val pdfReader = PdfReader(file.readBytes())
+
+        val pages = pdfReader.numberOfPages
+        val pagesContent: MutableMap<Int, String> = mutableMapOf()
+        for (index in 0..pages)
+            pagesContent[index] = PdfTextExtractor.getTextFromPage(pdfReader, index)
+
+        return Book.Builder()
+            .name(file.nameWithoutExtension)
+            .build()
     }
 
     override fun removeItem(item: Book): Int {

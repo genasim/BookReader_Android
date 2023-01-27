@@ -35,7 +35,7 @@ class ReadviewFragment : Fragment() {
             textView.text = it
         }
 
-        (activity as MainActivity).supportActionBar?.title = BookRepository.currentBook.bookName
+        (activity as MainActivity).supportActionBar?.title = BookRepository.currentBook.name
 
         AppFloatingButton.disable()
 
