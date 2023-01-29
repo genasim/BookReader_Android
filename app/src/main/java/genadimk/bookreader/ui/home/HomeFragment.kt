@@ -26,9 +26,8 @@ class HomeFragment : Fragment(), Observer {
 
     private val viewModel: MainViewModel by activityViewModels()
 
-    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) {
-        val file = File(it.toString())
-        BookRepository.addItem(file)
+    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let { BookRepository.addItem(it) }
     }
 
     init {

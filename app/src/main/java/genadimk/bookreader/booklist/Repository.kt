@@ -1,6 +1,6 @@
 package genadimk.bookreader.booklist
 
-import java.io.File
+import android.net.Uri
 
 interface Repository {
     var currentBook: Book
@@ -8,7 +8,7 @@ interface Repository {
     fun getRepository(): List<Book>
 
     /** Adds an item to the list and returns it's index */
-    fun addItem(file: File): Int
+    fun addItem(uri: Uri): Int
 
     /** Removers an item from the list and returns it's index */
     fun removeItem(item: Book): Int
