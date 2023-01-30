@@ -1,10 +1,9 @@
 package genadimk.bookreader.booklist
 
-import android.content.Context
 import android.net.Uri
 import com.pspdfkit.document.PdfDocument
 import com.pspdfkit.document.PdfDocumentLoader
-import java.io.File
+import genadimk.bookreader.ui.floatingButton.ButtonAdd
 
 object BookRepository : Repository {
     private val data = mutableListOf(
@@ -18,30 +17,32 @@ object BookRepository : Repository {
 
     override fun getRepository(): List<Book> = data.toList()
 
-    override fun addItem(uri: Uri): Int {
-        val item = createBookItem(uri)
+    override fun addItem(item: Book): Int {
         data.add(0, item)
         return data.indexOf(item)
-    }
-
-    private fun createBookItem(uri: Uri): Book {
-        val file = File(uri.toString())
-//        val document: PdfDocument = PdfDocumentLoader.openDocument(Context, uri)
-
-//        val pages = pdfReader.numberOfPages
-//        val pagesContent: MutableMap<Int, String> = mutableMapOf()
-//        for (index in 0..pages)
-//            pagesContent[index] = PdfTextExtractor.getTextFromPage(pdfReader, index)
-
-        return Book.Builder
-            .name(file.nameWithoutExtension)
-            .uri(uri)
-            .build()
     }
 
     override fun removeItem(item: Book): Int {
         val position = data.indexOf(item)
         data.remove(item)
         return position
+    }
+
+    fun createBookItem(_uri: Uri?): Book {
+        val uri = _uri ?: return Book.Builder.build()
+        
+        val document: PdfDocument =
+            PdfDocumentLoader.openDocument(ButtonAdd.fragment.requireContext(), uri)
+
+        val pages = document.pageCount
+        val pagesContent: MutableMap<Int, String> = mutableMapOf()
+        for (index in 0 until pages)
+            pagesContent[index] = document.getPageText(index)
+
+        return Book.Builder
+            .name(document.title!!)
+            .uri(uri)
+            .content(pagesContent)
+            .build()
     }
 }

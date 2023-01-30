@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import genadimk.bookreader.booklist.BookRepository
@@ -22,7 +21,7 @@ class ReadviewFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         val readviewViewModel =
             ViewModelProvider(this)[ReadviewViewModel::class.java]
@@ -30,10 +29,10 @@ class ReadviewFragment : Fragment() {
         _binding = FragmentReadviewBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textReadview
-        readviewViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+//        val textView: TextView = binding.textReadview
+//        readviewViewModel.text.observe(viewLifecycleOwner) {
+//            textView.text = it
+//        }
 
         (activity as MainActivity).supportActionBar?.title = BookRepository.currentBook.name
 

@@ -1,14 +1,24 @@
 package genadimk.bookreader.ui.floatingButton
 
+import android.net.Uri
 import androidx.recyclerview.widget.RecyclerView
 import genadimk.bookreader.R
-import genadimk.bookreader.observer.Broadcaster
+import genadimk.bookreader.booklist.BookListViewAdapter
+import genadimk.bookreader.booklist.BookRepository
 import genadimk.bookreader.observer.Observable
+import genadimk.bookreader.observer.Observer
+import genadimk.bookreader.ui.home.HomeFragment
 
 class ButtonAdd :
     ButtonHandler {
 
-    companion object : Observable by Broadcaster()
+    init {
+        HomeFragment.callback = this::addItem
+    }
+
+    companion object {
+        lateinit var fragment: HomeFragment
+    }
 
     lateinit var adapter: RecyclerView.Adapter<*>
 
@@ -16,10 +26,15 @@ class ButtonAdd :
         get() = R.drawable.ic_add
 
     override fun clickButton() {
-        addItem()
+        launchGetIntent()
     }
 
-    private fun addItem() {
-        sendUpdateEvent()
+    private fun launchGetIntent() = fragment.getContent.launch("application/pdf")
+
+    private fun addItem(uri: Uri?) {
+        with(adapter as BookListViewAdapter) {
+            val newBook = BookRepository.createBookItem(uri)
+            notifyItemInserted(BookRepository.addItem(newBook))
+        }
     }
 }

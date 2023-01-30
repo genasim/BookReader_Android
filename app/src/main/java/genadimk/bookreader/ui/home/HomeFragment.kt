@@ -1,5 +1,6 @@
 package genadimk.bookreader.ui.home
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,34 +11,40 @@ import androidx.fragment.app.activityViewModels
 import genadimk.bookreader.booklist.BookListViewAdapter
 import genadimk.bookreader.booklist.BookRepository
 import genadimk.bookreader.databinding.FragmentHomeBinding
-import genadimk.bookreader.observer.Observable
-import genadimk.bookreader.observer.Observer
 import genadimk.bookreader.ui.floatingButton.AppFloatingButton
 import genadimk.bookreader.ui.floatingButton.ButtonAdd
 import genadimk.bookreader.ui.mainActivity.MainViewModel
-import java.io.File
 
-class HomeFragment : Fragment(), Observer {
+class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
-    // This property is only valid between onCreateView and onDestroyView.
+    /** This property is only valid between onCreateView and onDestroyView */
     private val binding get() = _binding!!
 
     private val viewModel: MainViewModel by activityViewModels()
 
-    private val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let { BookRepository.addItem(it) }
+    companion object {
+        var callback: ((Uri?) -> Unit)? = null
+            set(value) {
+                if (field == null) field = value
+                else return
+            }
     }
 
     init {
-        ButtonAdd.subscribe(this)
+        ButtonAdd.fragment = this
+    }
+
+    /** open file picker to choose pdf uri and send callback to [ButtonAdd] */
+    val getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        callback?.invoke(uri)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -56,9 +63,5 @@ class HomeFragment : Fragment(), Observer {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun update(args: Observable.Arguments?) {
-        getContent.launch("application/pdf")
     }
 }
