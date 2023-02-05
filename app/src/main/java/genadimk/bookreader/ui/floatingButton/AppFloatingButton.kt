@@ -2,10 +2,11 @@ package genadimk.bookreader.ui.floatingButton
 
 import android.view.View
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import genadimk.bookreader.booklist.BookRepository
 
 class AppFloatingButton {
     companion object {
-        val buttonRemover = ButtonRemove()
+        val buttonRemover = ButtonRemove(BookRepository)
         val buttonAdder = ButtonAdd()
 
         var button: FloatingActionButton? = null

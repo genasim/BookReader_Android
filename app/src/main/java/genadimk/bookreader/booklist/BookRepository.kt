@@ -2,19 +2,12 @@ package genadimk.bookreader.booklist
 
 import android.content.Context
 import android.net.Uri
-import com.pspdfkit.document.PdfDocument
 import com.pspdfkit.document.PdfDocumentLoader
-import genadimk.bookreader.ui.floatingButton.ButtonAdd
 
 object BookRepository : Repository {
-    private val data = mutableListOf(
-        Book.Builder.name("11111").build(),
-        Book.Builder.name("22222").build(),
-        Book.Builder.name("33333").build(),
-        Book.Builder.name("44444").build()
-    )
+    private val data = mutableListOf<Book>()
 
-    override var currentBook: Book = data[0]
+    lateinit var currentBook: Book
 
     override fun getRepository(): List<Book> = data.toList()
 
@@ -30,17 +23,16 @@ object BookRepository : Repository {
     }
 
     fun createBookItem(context: Context, _uri: Uri?): Book {
-        val uri = _uri ?: return Book.Builder.build()
-        
-        val document: PdfDocument =
-            PdfDocumentLoader.openDocument(context, uri)
+        val uri = _uri ?: return Book.Builder().build()
+
+        val document = PdfDocumentLoader.openDocumentAsync(context, uri).blockingGet()
 
         val pages = document.pageCount
         val pagesContent: MutableMap<Int, String> = mutableMapOf()
         for (index in 0 until pages)
             pagesContent[index] = document.getPageText(index)
 
-        return Book.Builder
+        return Book.Builder()
             .name(document.title!!)
             .uri(uri)
             .content(pagesContent)

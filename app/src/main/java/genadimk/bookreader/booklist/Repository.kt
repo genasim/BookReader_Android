@@ -1,8 +1,6 @@
 package genadimk.bookreader.booklist
 
 interface Repository {
-    var currentBook: Book
-
     fun getRepository(): List<Book>
 
     /** Adds an item to the list and returns it's index */
