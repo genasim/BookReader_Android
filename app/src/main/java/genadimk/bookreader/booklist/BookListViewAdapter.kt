@@ -76,8 +76,8 @@ class BookListViewAdapter :
     private fun setClickListener(item: Book, holder: ItemViewHolder) {
         item.card?.setOnClickListener {
             val action: NavDirections = MobileNavigationDirections.actionGlobalNavReadview()
-            holder.view.findNavController().navigate(action)
             BookRepository.currentBook = item
+            holder.view.findNavController().navigate(action)
         }
     }
 
