@@ -14,8 +14,6 @@ import genadimk.bookreader.ui.home.HomeFragment
 class ButtonAdd :
     ButtonHandler, Observer {
 
-    companion object : Observable by CallbackProxy()
-
     init {
         HomeFragment.subscribe(this)
     }
@@ -26,7 +24,8 @@ class ButtonAdd :
         get() = R.drawable.ic_add
 
     override fun clickButton() {
-        sendUpdateEvent()
+//        requestPermission()
+        HomeFragment.contentPicker.launch("application/pdf")
     }
 
     private fun addItem(newBook: Book) {

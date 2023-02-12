@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.pspdfkit.configuration.PdfConfiguration
-import com.pspdfkit.ui.PdfFragment
+import com.pdftron.pdf.config.ViewerBuilder2
+import com.pdftron.pdf.controls.PdfViewCtrlTabHostFragment2
 import genadimk.bookreader.R
 import genadimk.bookreader.booklist.BookRepository
 import genadimk.bookreader.databinding.FragmentReadviewBinding
@@ -36,17 +36,6 @@ class ReadviewFragment : Fragment() {
 //        readviewViewModel.text.observe(viewLifecycleOwner) {
 //            textView.text = it
 //        }
-
-        val config = PdfConfiguration.Builder()
-            .restoreLastViewedPage(true)
-            .build()
-
-        requireActivity().supportFragmentManager.beginTransaction()
-            .add(R.id.pdfFragment_container,
-                PdfFragment.newInstance(BookRepository.currentBook.uri, config))
-            .commit()
-
-        (activity as MainActivity).supportActionBar?.title = BookRepository.currentBook.name
 
         AppFloatingButton.disable()
 

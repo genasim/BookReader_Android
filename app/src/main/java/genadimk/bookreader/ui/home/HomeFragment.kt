@@ -27,10 +27,9 @@ class HomeFragment : Fragment(), Observer {
 
     private val viewModel: MainViewModel by activityViewModels()
 
-    companion object : Observable by CallbackProxy()
-
-    init {
-        ButtonAdd.subscribe(this)
+    companion object : Observable by CallbackProxy() {
+        lateinit var contentPicker: ActivityResultLauncher<String>
+        lateinit var permissionRequest: ActivityResultLauncher<String>
     }
 
     /** open file picker to choose pdf uri and send callback to [ButtonAdd] */
@@ -40,6 +39,12 @@ class HomeFragment : Fragment(), Observer {
             val newBook = BookRepository.createBookItem(requireContext(), uri)
             val args = Observable.Arguments(mapOf(NEW_BOOK_KEY to newBook))
             sendUpdateEvent(args)
+        }
+
+    private val requestPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            Log.i(TAG, "Permission granted -> $it")
+            Manifest.permission_group.STORAGE
         }
 
     override fun onCreateView(
@@ -53,6 +58,9 @@ class HomeFragment : Fragment(), Observer {
         binding.homeListView.adapter = BookListViewAdapter()
 
         AppFloatingButton.enable()
+
+        contentPicker = getContent
+        permissionRequest = requestPermission
 
         return root
     }

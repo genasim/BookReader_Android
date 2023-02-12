@@ -41,6 +41,10 @@
             android:windowSoftInputMode="adjustPan">
 
         </activity>
+
+        <meta-data
+            android:name="pdftron_license_key"
+            android:value="${pdftronLicenseKey}" />
     </application>
 
 </manifest>

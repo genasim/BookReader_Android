@@ -16,6 +16,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [pdftronLicenseKey:PDFTRON_LICENSE_KEY]
     }
 
     buildTypes {
@@ -37,8 +39,6 @@ android {
 }
 
 dependencies {
-    implementation 'com.pspdfkit:pspdfkit:8.5.0'
-
     implementation "com.pdftron:pdftron:9.4.2"
     implementation "com.pdftron:tools:9.4.2"
     implementation 'androidx.multidex:multidex:2.0.1'
