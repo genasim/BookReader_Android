@@ -44,7 +44,7 @@ class ReadviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         BookRepository.currentBook?.let { book ->
-            addViewerFragment(view, book)
+            renderPdf(view, book)
         }
     }
 
@@ -53,15 +53,23 @@ class ReadviewFragment : Fragment() {
         _binding = null
     }
 
-    /** Add a viewer fragment to the layout container in the specified
-     *  activity, and returns the added fragment */
-    private fun addViewerFragment(
-        view: View,
-        book: Book,
-    ) {
+    override fun onStop() {
+        super.onStop()
+        view?.let {
+            val pdfViewCtrl: PDFViewCtrl = it.findViewById(R.id.pdfView);
+            BookRepository.currentBook?.page = pdfViewCtrl.currentPage
+        }
+    }
+
+    private fun renderPdf(view: View, book: Book) {
         val pdfViewCtrl: PDFViewCtrl = view.findViewById(R.id.pdfView);
         try {
-            pdfViewCtrl.openPDFUri(BookRepository.currentBook?.uri, null)
+            pdfViewCtrl.apply {
+                BookRepository.currentBook?.let { book ->
+                    openPDFUri(book.uri, null)
+                    currentPage = book.page
+                }
+            }
         } catch (ex: Exception) {
             ex.printStackTrace();
         }

@@ -14,7 +14,7 @@ class Book private constructor(
     var card: MaterialCardView? = null
     var isChecked: Boolean = false
 
-    lateinit var pages: Map<Int, String>
+    var page = 0
 
     class Builder {
         private var cover: Int = R.drawable.ic_launcher_background
