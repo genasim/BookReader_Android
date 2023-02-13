@@ -1,20 +1,22 @@
 package genadimk.bookreader.ui.floatingButton
 
+import android.Manifest
+import android.app.Activity
+import android.content.pm.PackageManager
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import genadimk.bookreader.R
 import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.booklist.BookListViewAdapter
 import genadimk.bookreader.booklist.BookRepository
-import genadimk.bookreader.utils.NEW_BOOK_KEY
-import genadimk.bookreader.observer.CallbackProxy
 import genadimk.bookreader.observer.Observable
 import genadimk.bookreader.observer.Observer
 import genadimk.bookreader.ui.home.HomeFragment
+import genadimk.bookreader.utils.NEW_BOOK_KEY
 
 class ButtonAdd :
     ButtonHandler, Observer {
-
-    companion object : Observable by CallbackProxy()
 
     init {
         HomeFragment.subscribe(this)
@@ -26,7 +28,8 @@ class ButtonAdd :
         get() = R.drawable.ic_add
 
     override fun clickButton() {
-        sendUpdateEvent()
+//        requestPermission()
+        HomeFragment.contentPicker.launch("application/pdf")
     }
 
     private fun addItem(newBook: Book) {
@@ -42,6 +45,27 @@ class ButtonAdd :
 
             val newBook = args[NEW_BOOK_KEY] as Book
             addItem(newBook)
+        }
+    }
+
+    private fun requestPermission() {
+        val context = (adapter as BookListViewAdapter).parent.context
+        when {
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.MANAGE_DOCUMENTS
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                //  Permission has been granted
+                HomeFragment.contentPicker.launch("application/pdf")
+            }
+
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                context as Activity,
+                Manifest.permission.MANAGE_DOCUMENTS
+            ) -> {
+            }
+
+            else -> HomeFragment.permissionRequest.launch(Manifest.permission.MANAGE_DOCUMENTS)
         }
     }
 }

@@ -1,13 +1,11 @@
 package genadimk.bookreader.booklist
 
-import android.content.Context
 import android.net.Uri
-import com.pspdfkit.document.PdfDocumentLoader
 
 object BookRepository : Repository {
     private val data = mutableListOf<Book>()
 
-    lateinit var currentBook: Book
+    var currentBook: Book? = null
 
     override fun getRepository(): List<Book> = data.toList()
 
@@ -22,20 +20,11 @@ object BookRepository : Repository {
         return position
     }
 
-    fun createBookItem(context: Context, _uri: Uri?): Book {
+    fun createBookItem(_uri: Uri?): Book {
         val uri = _uri ?: return Book.Builder().build()
 
-        val document = PdfDocumentLoader.openDocumentAsync(context, uri).blockingGet()
-
-        val pages = document.pageCount
-        val pagesContent: MutableMap<Int, String> = mutableMapOf()
-        for (index in 0 until pages)
-            pagesContent[index] = document.getPageText(index)
-
         return Book.Builder()
-            .name(document.title!!)
             .uri(uri)
-            .content(pagesContent)
             .build()
     }
 }

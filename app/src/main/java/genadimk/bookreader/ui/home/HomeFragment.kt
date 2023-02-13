@@ -1,24 +1,25 @@
 package genadimk.bookreader.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import genadimk.bookreader.booklist.BookListViewAdapter
 import genadimk.bookreader.booklist.BookRepository
-import genadimk.bookreader.utils.NEW_BOOK_KEY
 import genadimk.bookreader.databinding.FragmentHomeBinding
 import genadimk.bookreader.observer.CallbackProxy
 import genadimk.bookreader.observer.Observable
-import genadimk.bookreader.observer.Observer
 import genadimk.bookreader.ui.floatingButton.AppFloatingButton
-import genadimk.bookreader.ui.floatingButton.ButtonAdd
 import genadimk.bookreader.ui.mainActivity.MainViewModel
+import genadimk.bookreader.utils.NEW_BOOK_KEY
+import genadimk.bookreader.utils.TAG
 
-class HomeFragment : Fragment(), Observer {
+class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -27,19 +28,21 @@ class HomeFragment : Fragment(), Observer {
 
     private val viewModel: MainViewModel by activityViewModels()
 
-    companion object : Observable by CallbackProxy()
-
-    init {
-        ButtonAdd.subscribe(this)
+    companion object : Observable by CallbackProxy() {
+        lateinit var contentPicker: ActivityResultLauncher<String>
+        lateinit var permissionRequest: ActivityResultLauncher<String>
     }
 
-    /** open file picker to choose pdf uri and send callback to [ButtonAdd] */
-    override fun update(args: Observable.Arguments?) = getContent.launch("application/pdf")
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            val newBook = BookRepository.createBookItem(requireContext(), uri)
+            val newBook = BookRepository.createBookItem(uri)
             val args = Observable.Arguments(mapOf(NEW_BOOK_KEY to newBook))
             sendUpdateEvent(args)
+        }
+
+    private val requestPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            Log.i(TAG, "Permission granted -> $it")
         }
 
     override fun onCreateView(
@@ -53,6 +56,9 @@ class HomeFragment : Fragment(), Observer {
         binding.homeListView.adapter = BookListViewAdapter()
 
         AppFloatingButton.enable()
+
+        contentPicker = getContent
+        permissionRequest = requestPermission
 
         return root
     }
