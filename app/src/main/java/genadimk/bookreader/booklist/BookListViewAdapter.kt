@@ -43,30 +43,30 @@ class BookListViewAdapter :
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        val item = data[position]
+        val book = data[position]
         holder.apply {
-            item.bookCard = this.bookCard
-            item.bookCard?.isChecked = false
-            bookCover.setImageResource(item.bookCover)
-            bookName.text = item.bookName
-            bookAuthor.text = item.bookAuthor
-            isChecked = item.isChecked
+            book.card = this.bookCard
+            book.card?.isChecked = false
+            bookCover.setImageResource(book.cover)
+            bookName.text = book.name
+            bookAuthor.text = book.author
+            isChecked = book.isChecked
         }
 
-        setLongClickListener(item)
+        setLongClickListener(book)
 
-        setClickListener(item, holder)
+        setClickListener(book, holder)
     }
 
     private fun setLongClickListener(item: Book) {
-        item.bookCard?.setOnLongClickListener {
+        item.card?.setOnLongClickListener {
             item.apply {
                 isChecked = !isChecked
-                bookCard?.isChecked = isChecked
+                card?.isChecked = isChecked
             }
             AppFloatingButton.apply { buttonHandler = buttonRemover }
 
-            if (data.all { it.bookCard?.isChecked == false })
+            if (data.all { it.card?.isChecked == false })
                 AppFloatingButton.apply { buttonHandler = buttonAdder }
 
             true
@@ -74,10 +74,10 @@ class BookListViewAdapter :
     }
 
     private fun setClickListener(item: Book, holder: ItemViewHolder) {
-        item.bookCard?.setOnClickListener {
+        item.card?.setOnClickListener {
             val action: NavDirections = MobileNavigationDirections.actionGlobalNavReadview()
-            holder.view.findNavController().navigate(action)
             BookRepository.currentBook = item
+            holder.view.findNavController().navigate(action)
         }
     }
 
