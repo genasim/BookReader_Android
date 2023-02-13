@@ -1,6 +1,5 @@
 package genadimk.bookreader.ui.home
 
-import android.Manifest
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -44,7 +43,6 @@ class HomeFragment : Fragment() {
     private val requestPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             Log.i(TAG, "Permission granted -> $it")
-            Manifest.permission_group.STORAGE
         }
 
     override fun onCreateView(

@@ -1,17 +1,14 @@
 package genadimk.bookreader.ui.readview
 
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.pdftron.pdf.config.ViewerBuilder2
-import com.pdftron.pdf.controls.PdfViewCtrlTabHostFragment2
+import com.pdftron.pdf.PDFViewCtrl
 import genadimk.bookreader.R
+import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.booklist.BookRepository
 import genadimk.bookreader.databinding.FragmentReadviewBinding
 import genadimk.bookreader.ui.floatingButton.AppFloatingButton
@@ -46,15 +43,8 @@ class ReadviewFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        val pdfViewCtrl: PDFViewCtrl = view.findViewById(R.id.pdfView);
-//        try {
-//            pdfViewCtrl.openPDFUri(Uri.parse("https://pdftron.s3.amazonaws.com/downloads/pdfref.pdf"),
-//                null);
-//        } catch (ex: Exception) {
-//            ex.printStackTrace();
-//        }
-        BookRepository.currentBook?.let {
-            addViewerFragment(R.id.pdfView, requireContext(), it.uri)
+        BookRepository.currentBook?.let { book ->
+            addViewerFragment(view, book)
         }
     }
 
@@ -66,21 +56,16 @@ class ReadviewFragment : Fragment() {
     /** Add a viewer fragment to the layout container in the specified
      *  activity, and returns the added fragment */
     private fun addViewerFragment(
-        @IdRes fragmentContainer: Int,
-        context: Context,
-        fileUri: Uri,
-    ): PdfViewCtrlTabHostFragment2 {
+        view: View,
+        book: Book,
+    ) {
+        val pdfViewCtrl: PDFViewCtrl = view.findViewById(R.id.pdfView);
+        try {
+            pdfViewCtrl.openPDFUri(BookRepository.currentBook?.uri, null)
+        } catch (ex: Exception) {
+            ex.printStackTrace();
+        }
 
-        // Create the viewer fragment
-        val fragment = ViewerBuilder2.withUri(fileUri, null).build(context)
-
-        // Add the fragment to the layout fragment container
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(fragmentContainer, fragment)
-            .commit()
-
-        (activity as MainActivity).supportActionBar?.title = BookRepository.currentBook!!.name
-
-        return fragment
+        (activity as MainActivity).supportActionBar?.title = book.name
     }
 }

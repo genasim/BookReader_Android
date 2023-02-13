@@ -53,7 +53,7 @@ class ButtonAdd :
         when {
             ContextCompat.checkSelfPermission(
                 context,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.MANAGE_DOCUMENTS
             ) == PackageManager.PERMISSION_GRANTED -> {
                 //  Permission has been granted
                 HomeFragment.contentPicker.launch("application/pdf")
@@ -61,11 +61,11 @@ class ButtonAdd :
 
             ActivityCompat.shouldShowRequestPermissionRationale(
                 context as Activity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.MANAGE_DOCUMENTS
             ) -> {
             }
 
-            else -> HomeFragment.permissionRequest.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            else -> HomeFragment.permissionRequest.launch(Manifest.permission.MANAGE_DOCUMENTS)
         }
     }
 }
