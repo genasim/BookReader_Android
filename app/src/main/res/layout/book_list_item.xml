@@ -36,19 +36,6 @@
             app:layout_constraintTop_toBottomOf="@+id/book_cover_image"
             tools:text="Clean code" />
 
-        <TextView
-            android:id="@+id/book_author_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/book_name"
-            tools:text="Book author name" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

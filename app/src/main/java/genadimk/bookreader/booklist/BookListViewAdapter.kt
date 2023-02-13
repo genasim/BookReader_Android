@@ -31,7 +31,6 @@ class BookListViewAdapter :
         val bookCard: MaterialCardView = view.findViewById(R.id.book_item_card) as MaterialCardView
         val bookCover: ImageView = view.findViewById(R.id.book_cover_image) as ImageView
         val bookName: TextView = view.findViewById(R.id.book_name) as TextView
-        val bookAuthor: TextView = view.findViewById(R.id.book_author_name) as TextView
         var isChecked: Boolean = false
     }
 
@@ -49,7 +48,6 @@ class BookListViewAdapter :
             book.card?.isChecked = false
             bookCover.setImageResource(book.cover)
             bookName.text = book.name
-            bookAuthor.text = book.author
             isChecked = book.isChecked
         }
 
