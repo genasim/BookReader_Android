@@ -62,7 +62,7 @@ class ReadviewFragment : Fragment() {
     }
 
     private fun renderPdf(view: View, book: Book) {
-        val pdfViewCtrl: PDFViewCtrl = view.findViewById(R.id.pdfView);
+        val pdfViewCtrl: PDFViewCtrl = view.findViewById(R.id.pdfView)
         try {
             pdfViewCtrl.apply {
                 BookRepository.currentBook?.let { book ->

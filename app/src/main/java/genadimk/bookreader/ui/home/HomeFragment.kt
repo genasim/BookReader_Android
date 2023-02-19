@@ -36,8 +36,8 @@ class HomeFragment : Fragment() {
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             val newBook = BookRepository.createBookItem(uri)
-            val args = Observable.Arguments(mapOf(NEW_BOOK_KEY to newBook))
-            sendUpdateEvent(args)
+            val index = BookRepository.addItem(newBook)
+            binding.homeListView.adapter?.notifyItemInserted(index)
         }
 
     private val requestPermission =

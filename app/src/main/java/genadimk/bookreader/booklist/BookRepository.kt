@@ -23,8 +23,12 @@ object BookRepository : Repository {
     fun createBookItem(_uri: Uri?): Book {
         val uri = _uri ?: return Book.Builder().build()
 
+//        val fileName = uri.lastPathSegment
+        val fileName = uri.lastPathSegment
+
         return Book.Builder()
             .uri(uri)
+            .name(fileName!!)
             .build()
     }
 }

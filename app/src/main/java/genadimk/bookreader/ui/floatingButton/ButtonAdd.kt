@@ -16,11 +16,7 @@ import genadimk.bookreader.ui.home.HomeFragment
 import genadimk.bookreader.utils.NEW_BOOK_KEY
 
 class ButtonAdd :
-    ButtonHandler, Observer {
-
-    init {
-        HomeFragment.subscribe(this)
-    }
+    ButtonHandler {
 
     lateinit var adapter: RecyclerView.Adapter<*>
 
@@ -35,16 +31,6 @@ class ButtonAdd :
     private fun addItem(newBook: Book) {
         with(adapter as BookListViewAdapter) {
             notifyItemInserted(BookRepository.addItem(newBook))
-        }
-    }
-
-    override fun update(args: Observable.Arguments?) {
-        args?.let {
-            if (!it.args.containsKey(NEW_BOOK_KEY) || args[NEW_BOOK_KEY] !is Book)
-                return
-
-            val newBook = args[NEW_BOOK_KEY] as Book
-            addItem(newBook)
         }
     }
 
