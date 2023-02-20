@@ -1,4 +1,4 @@
-package genadimk.bookreader.ui.floatingButton
+package genadimk.bookreader.view.floatingButton
 
 import android.Manifest
 import android.app.Activity
@@ -10,10 +10,7 @@ import genadimk.bookreader.R
 import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.booklist.BookListViewAdapter
 import genadimk.bookreader.booklist.BookRepository
-import genadimk.bookreader.observer.Observable
-import genadimk.bookreader.observer.Observer
-import genadimk.bookreader.ui.home.HomeFragment
-import genadimk.bookreader.utils.NEW_BOOK_KEY
+import genadimk.bookreader.view.HomeFragment
 
 class ButtonAdd :
     ButtonHandler {

@@ -1,4 +1,4 @@
-package genadimk.bookreader.ui.home
+package genadimk.bookreader.view
 
 import android.os.Bundle
 import android.util.Log
@@ -14,9 +14,8 @@ import genadimk.bookreader.booklist.BookRepository
 import genadimk.bookreader.databinding.FragmentHomeBinding
 import genadimk.bookreader.observer.CallbackProxy
 import genadimk.bookreader.observer.Observable
-import genadimk.bookreader.ui.floatingButton.AppFloatingButton
-import genadimk.bookreader.ui.mainActivity.MainViewModel
-import genadimk.bookreader.utils.NEW_BOOK_KEY
+import genadimk.bookreader.view.floatingButton.AppFloatingButton
+import genadimk.bookreader.viewmodels.MainViewModel
 import genadimk.bookreader.utils.TAG
 
 class HomeFragment : Fragment() {

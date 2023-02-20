@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import genadimk.bookreader.MobileNavigationDirections
 import genadimk.bookreader.R
-import genadimk.bookreader.ui.floatingButton.AppFloatingButton
+import genadimk.bookreader.view.floatingButton.AppFloatingButton
 
 class BookListViewAdapter :
     RecyclerView.Adapter<BookListViewAdapter.ItemViewHolder>() {

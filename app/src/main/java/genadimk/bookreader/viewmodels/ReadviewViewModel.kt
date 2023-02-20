@@ -1,4 +1,4 @@
-package genadimk.bookreader.ui.readview
+package genadimk.bookreader.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

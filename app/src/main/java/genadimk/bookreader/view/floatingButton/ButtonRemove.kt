@@ -1,10 +1,9 @@
-package genadimk.bookreader.ui.floatingButton
+package genadimk.bookreader.view.floatingButton
 
 import androidx.recyclerview.widget.RecyclerView
 import genadimk.bookreader.R
 import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.booklist.BookListViewAdapter
-import genadimk.bookreader.booklist.BookRepository
 import genadimk.bookreader.booklist.Repository
 import java.util.function.Predicate
 

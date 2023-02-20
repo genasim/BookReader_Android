@@ -1,4 +1,4 @@
-package genadimk.bookreader.ui.mainActivity
+package genadimk.bookreader.view
 
 import android.os.Bundle
 import android.view.Menu
@@ -12,7 +12,8 @@ import androidx.navigation.ui.*
 import com.google.android.material.navigation.NavigationView
 import genadimk.bookreader.R
 import genadimk.bookreader.databinding.ActivityMainBinding
-import genadimk.bookreader.ui.floatingButton.AppFloatingButton
+import genadimk.bookreader.view.floatingButton.AppFloatingButton
+import genadimk.bookreader.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 

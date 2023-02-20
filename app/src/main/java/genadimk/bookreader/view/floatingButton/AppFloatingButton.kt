@@ -1,4 +1,4 @@
-package genadimk.bookreader.ui.floatingButton
+package genadimk.bookreader.view.floatingButton
 
 import android.view.View
 import com.google.android.material.floatingactionbutton.FloatingActionButton

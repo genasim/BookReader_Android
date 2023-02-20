@@ -1,4 +1,4 @@
-package genadimk.bookreader.ui.readview
+package genadimk.bookreader.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,8 +11,8 @@ import genadimk.bookreader.R
 import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.booklist.BookRepository
 import genadimk.bookreader.databinding.FragmentReadviewBinding
-import genadimk.bookreader.ui.floatingButton.AppFloatingButton
-import genadimk.bookreader.ui.mainActivity.MainActivity
+import genadimk.bookreader.view.floatingButton.AppFloatingButton
+import genadimk.bookreader.viewmodels.ReadviewViewModel
 
 class ReadviewFragment : Fragment() {
 
