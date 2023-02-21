@@ -10,8 +10,7 @@ class ReadviewViewModel(private val bookDao: BookDao) : ViewModel() {
 
 class ReadviewViewModelFactory(private val bookDao: BookDao) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ReadviewViewModel::class.java))
-        {
+        if (modelClass.isAssignableFrom(ReadviewViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return ReadviewViewModel(bookDao) as T
         }

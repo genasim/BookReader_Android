@@ -1,14 +1,22 @@
 package genadimk.bookreader.model
 
-import android.net.Uri
+import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.google.android.material.card.MaterialCardView
 
 @Entity(tableName = "books")
 data class Books(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "uri") val uri: String,
-    @ColumnInfo(name = "page") val page: Int
-)
+    @PrimaryKey(autoGenerate = true)
+    val id: Int = 0,
+    @NonNull @ColumnInfo(name = "name")
+    val name: String,
+    @NonNull @ColumnInfo(name = "uri")
+    val uri: String,
+    @NonNull @ColumnInfo(name = "page", defaultValue = "0")
+    val page: Int,
+) {
+//    var card: MaterialCardView? = null
+//    var isChecked: Boolean = false
+}

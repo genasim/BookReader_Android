@@ -1,11 +1,27 @@
 package genadimk.bookreader.viewmodels
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import genadimk.bookreader.model.BookDao
+import genadimk.bookreader.model.Books
+import kotlinx.coroutines.launch
 
 class HomeViewModel(private val bookDao: BookDao) : ViewModel() {
-    
+
+    val allBookEntries: LiveData<List<Books>> = bookDao.getAllBooks().asLiveData()
+
+    fun addBook() {
+        val newBook = createNewBookEntry("Clean code")
+        viewModelScope.launch {
+            bookDao.insert(newBook)
+        }
+    }
+
+    private fun createNewBookEntry(name: String): Books = Books(
+        name = name,
+        uri = "",
+        page = 0
+    )
+
 }
 
 class HomeViewModelFactory(private val bookDao: BookDao) : ViewModelProvider.Factory {

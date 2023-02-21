@@ -9,14 +9,17 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import genadimk.bookreader.booklist.BookListViewAdapter
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
+import genadimk.bookreader.MobileNavigationDirections
 import genadimk.bookreader.booklist.BookRepository
 import genadimk.bookreader.databinding.FragmentHomeBinding
+import genadimk.bookreader.model.BookListAdapter
 import genadimk.bookreader.model.BookReaderApplication
 import genadimk.bookreader.observer.CallbackProxy
 import genadimk.bookreader.observer.Observable
-import genadimk.bookreader.view.floatingButton.AppFloatingButton
 import genadimk.bookreader.utils.TAG
+import genadimk.bookreader.view.floatingButton.AppFloatingButton
 import genadimk.bookreader.viewmodels.HomeViewModel
 import genadimk.bookreader.viewmodels.HomeViewModelFactory
 
@@ -58,8 +61,6 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.homeListView.adapter = BookListViewAdapter()
-
         AppFloatingButton.enable()
 
         contentPicker = getContent
@@ -69,7 +70,40 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        //        val adapter = BookListViewAdapter()
+        val adapter = BookListAdapter(
+            onItemClicked = {
+                val action: NavDirections = MobileNavigationDirections.actionGlobalNavReadview()
+//                BookRepository.currentBook = item
+                findNavController().navigate(action)
+            },
+            onItemLongClicked = { book ->
+//                book.apply {
+//                    isChecked = !isChecked
+//                    card?.isChecked = isChecked
+//                }
+//                AppFloatingButton.apply { buttonHandler = buttonRemover }
+//
+//                viewModel.allBookEntries.observe(viewLifecycleOwner) { data ->
+//                    if (data.all { it.card?.isChecked == false })
+//                        AppFloatingButton.apply { buttonHandler = buttonAdder }
+//                }
+
+                true
+            }
+        )
+
+        binding.homeListView.adapter = adapter
+        viewModel.allBookEntries.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
+
+        binding.tempButton.setOnClickListener {
+            viewModel.addBook()
+        }
+
         AppFloatingButton.apply { buttonHandler = buttonAdder }
+
     }
 
     override fun onDestroyView() {

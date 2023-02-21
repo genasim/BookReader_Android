@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.devtools.ksp' version '1.8.0-1.0.8'
 }
 
 android {
@@ -39,9 +40,16 @@ android {
 }
 
 dependencies {
+    // PdfTron libraries
     implementation "com.pdftron:pdftron:9.4.2"
     implementation "com.pdftron:tools:9.4.2"
     implementation 'androidx.multidex:multidex:2.0.1'
+
+
+    // Room libraries
+    implementation "androidx.room:room-runtime:2.5.0"
+    ksp "androidx.room:room-compiler:2.5.0"
+    implementation "androidx.room:room-ktx:2.5.0"
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
