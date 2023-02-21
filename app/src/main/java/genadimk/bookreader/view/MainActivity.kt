@@ -13,7 +13,6 @@ import com.google.android.material.navigation.NavigationView
 import genadimk.bookreader.R
 import genadimk.bookreader.databinding.ActivityMainBinding
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
-import genadimk.bookreader.viewmodels.MainViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
 
-    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -5,37 +5,38 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.pdftron.pdf.PDFViewCtrl
 import genadimk.bookreader.R
 import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.booklist.BookRepository
 import genadimk.bookreader.databinding.FragmentReadviewBinding
+import genadimk.bookreader.model.BookReaderApplication
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
 import genadimk.bookreader.viewmodels.ReadviewViewModel
+import genadimk.bookreader.viewmodels.ReadviewViewModelFactory
 
 class ReadviewFragment : Fragment() {
 
     private var _binding: FragmentReadviewBinding? = null
-
     // This property is only valid between onCreateView and onDestroyView.
     private val binding get() = _binding!!
+
+    private val viewModel: ReadviewViewModel by activityViewModels {
+        ReadviewViewModelFactory(
+            (activity?.application as BookReaderApplication).database.getBookDao()
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        val readviewViewModel =
-            ViewModelProvider(this)[ReadviewViewModel::class.java]
 
         _binding = FragmentReadviewBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-//        val textView: TextView = binding.textReadview
-//        readviewViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
 
         AppFloatingButton.disable()
 

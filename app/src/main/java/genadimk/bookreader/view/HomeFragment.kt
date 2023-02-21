@@ -12,11 +12,13 @@ import androidx.fragment.app.activityViewModels
 import genadimk.bookreader.booklist.BookListViewAdapter
 import genadimk.bookreader.booklist.BookRepository
 import genadimk.bookreader.databinding.FragmentHomeBinding
+import genadimk.bookreader.model.BookReaderApplication
 import genadimk.bookreader.observer.CallbackProxy
 import genadimk.bookreader.observer.Observable
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
-import genadimk.bookreader.viewmodels.MainViewModel
 import genadimk.bookreader.utils.TAG
+import genadimk.bookreader.viewmodels.HomeViewModel
+import genadimk.bookreader.viewmodels.HomeViewModelFactory
 
 class HomeFragment : Fragment() {
 
@@ -25,7 +27,11 @@ class HomeFragment : Fragment() {
     /** This property is only valid between onCreateView and onDestroyView */
     private val binding get() = _binding!!
 
-    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: HomeViewModel by activityViewModels {
+        HomeViewModelFactory(
+            (activity?.application as BookReaderApplication).database.getBookDao()
+        )
+    }
 
     companion object : Observable by CallbackProxy() {
         lateinit var contentPicker: ActivityResultLauncher<String>
