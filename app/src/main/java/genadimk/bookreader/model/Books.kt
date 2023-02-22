@@ -16,7 +16,6 @@ data class Books(
     val uri: String,
     @NonNull @ColumnInfo(name = "page", defaultValue = "0")
     val page: Int,
-) {
-//    var card: MaterialCardView? = null
-//    var isChecked: Boolean = false
-}
+    @NonNull @ColumnInfo(name = "checked", defaultValue = "0")
+    val checked: Int
+)

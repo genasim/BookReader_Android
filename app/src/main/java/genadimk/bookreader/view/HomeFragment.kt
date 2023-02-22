@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import genadimk.bookreader.MobileNavigationDirections
 import genadimk.bookreader.booklist.BookRepository
 import genadimk.bookreader.databinding.FragmentHomeBinding
@@ -77,29 +78,39 @@ class HomeFragment : Fragment() {
 //                BookRepository.currentBook = item
                 findNavController().navigate(action)
             },
-            onItemLongClicked = { book ->
-//                book.apply {
-//                    isChecked = !isChecked
-//                    card?.isChecked = isChecked
-//                }
-//                AppFloatingButton.apply { buttonHandler = buttonRemover }
-//
-//                viewModel.allBookEntries.observe(viewLifecycleOwner) { data ->
-//                    if (data.all { it.card?.isChecked == false })
-//                        AppFloatingButton.apply { buttonHandler = buttonAdder }
-//                }
+            onItemLongClicked = { book, itemView ->
+                //  0 = false | 1 = true
+                when (book.checked) {
+                    0 -> {
+                        viewModel.checkCurrent(book, itemView)
+                        AppFloatingButton.apply { buttonHandler = buttonRemover }
+                    }
+                    1 -> viewModel.uncheckCurrent(book, itemView)
+                }
+
+                val data = viewModel.allBookEntriesLive.value
+                data?.let { list ->
+                    if (list.all { it.checked == 0 })
+                        AppFloatingButton.apply { buttonHandler = buttonAdder }
+                }
 
                 true
             }
         )
 
         binding.homeListView.adapter = adapter
-        viewModel.allBookEntries.observe(viewLifecycleOwner) {
+        viewModel.allBookEntriesLive.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
 
+        // TODO: Remove button
         binding.tempButton.setOnClickListener {
             viewModel.addBook()
+        }
+
+        // TODO: Remove button
+        binding.tempDelButton.setOnClickListener {
+            showConfirmationBox()
         }
 
         AppFloatingButton.apply { buttonHandler = buttonAdder }
@@ -109,5 +120,21 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun showConfirmationBox() {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Dialog alert title")
+            .setCancelable(true)
+            .setMessage("Are you sure???")
+            .setPositiveButton("Yes") { _, _ ->
+                viewModel.allBookEntriesLive.value?.let {
+                    for (book in it) {
+                        viewModel.delete(book)
+                    }
+                }
+            }
+            .setNeutralButton("Cancel") { _, _ -> }
+            .show()
     }
 }

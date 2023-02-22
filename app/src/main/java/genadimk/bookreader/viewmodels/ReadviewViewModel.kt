@@ -8,6 +8,9 @@ class ReadviewViewModel(private val bookDao: BookDao) : ViewModel() {
 
 }
 
+/**
+ * Factory class to instantiate the [ReadviewViewModel] instance.
+ */
 class ReadviewViewModelFactory(private val bookDao: BookDao) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ReadviewViewModel::class.java)) {
