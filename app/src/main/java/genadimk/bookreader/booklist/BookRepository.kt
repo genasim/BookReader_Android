@@ -20,15 +20,15 @@ object BookRepository : Repository {
         return position
     }
 
-    fun createBookItem(_uri: Uri?): Book {
-        val uri = _uri ?: return Book.Builder().build()
-
+//    fun createBookItem(_uri: Uri?): Book {
+//        val uri = _uri ?: return Book.Builder().build()
+//
+////        val fileName = uri.lastPathSegment
 //        val fileName = uri.lastPathSegment
-        val fileName = uri.lastPathSegment
-
-        return Book.Builder()
-            .uri(uri)
-            .name(fileName!!)
-            .build()
-    }
+//
+//        return Book.Builder()
+//            .uri(uri)
+//            .name(fileName!!)
+//            .build()
+//    }
 }

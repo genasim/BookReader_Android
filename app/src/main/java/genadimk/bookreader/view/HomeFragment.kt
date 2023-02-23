@@ -13,7 +13,6 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import genadimk.bookreader.MobileNavigationDirections
-import genadimk.bookreader.booklist.BookRepository
 import genadimk.bookreader.databinding.FragmentHomeBinding
 import genadimk.bookreader.model.BookListAdapter
 import genadimk.bookreader.model.BookReaderApplication
@@ -44,9 +43,9 @@ class HomeFragment : Fragment() {
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            val newBook = BookRepository.createBookItem(uri)
-            val index = BookRepository.addItem(newBook)
-            binding.homeListView.adapter?.notifyItemInserted(index)
+//            val newBook = BookRepository.createBookItem(uri)
+//            val index = BookRepository.addItem(newBook)
+//            binding.homeListView.adapter?.notifyItemInserted(index)
         }
 
     private val requestPermission =
@@ -71,26 +70,21 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //        val adapter = BookListViewAdapter()
         val adapter = BookListAdapter(
             onItemClicked = {
                 val action: NavDirections = MobileNavigationDirections.actionGlobalNavReadview()
-//                BookRepository.currentBook = item
+                //  TODO: set current book to the one pressed
                 findNavController().navigate(action)
             },
-            onItemLongClicked = { book, itemView ->
-                //  0 = false | 1 = true
-                when (book.checked) {
-                    0 -> {
-                        viewModel.checkCurrent(book, itemView)
-                        AppFloatingButton.apply { buttonHandler = buttonRemover }
-                    }
-                    1 -> viewModel.uncheckCurrent(book, itemView)
+            onItemLongClicked = { book ->
+                book.apply {
+                    isChecked = !isChecked
+                    card!!.isChecked = isChecked
                 }
+                when (book.isChecked) {
+                    true  -> AppFloatingButton.apply { buttonHandler = buttonRemover }
 
-                val data = viewModel.allBookEntriesLive.value
-                data?.let { list ->
-                    if (list.all { it.checked == 0 })
+                    false -> if (viewModel.noBooksAreChecked())
                         AppFloatingButton.apply { buttonHandler = buttonAdder }
                 }
 
@@ -99,22 +93,19 @@ class HomeFragment : Fragment() {
         )
 
         binding.homeListView.adapter = adapter
-        viewModel.allBookEntriesLive.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+        viewModel.allBookEntriesLive.observe(viewLifecycleOwner) { bookEntries ->
+            val newList = viewModel.updateBookList(bookEntries)
+            adapter.submitList(newList)
+            AppFloatingButton.apply { buttonHandler = buttonAdder }
         }
 
         // TODO: Remove button
-        binding.tempButton.setOnClickListener {
-            viewModel.addBook()
-        }
+        binding.tempButton.setOnClickListener { viewModel.addBook() }
 
         // TODO: Remove button
-        binding.tempDelButton.setOnClickListener {
-            showConfirmationBox()
-        }
+        binding.tempDelButton.setOnClickListener { showConfirmationBox() }
 
         AppFloatingButton.apply { buttonHandler = buttonAdder }
-
     }
 
     override fun onDestroyView() {

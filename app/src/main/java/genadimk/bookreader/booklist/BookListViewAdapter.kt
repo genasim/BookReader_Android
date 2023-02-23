@@ -47,7 +47,7 @@ class BookListViewAdapter :
             book.card = this.bookCard
             book.card?.isChecked = false
             bookCover.setImageResource(book.cover)
-            bookName.text = book.name
+//            bookName.text = book.name
             isChecked = book.isChecked
         }
 

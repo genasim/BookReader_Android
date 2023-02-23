@@ -1,17 +1,17 @@
 package genadimk.bookreader.model
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.databinding.BookListItemBinding
 
 class BookListAdapter(
-    private val onItemClicked: (Books) -> Unit,
-    private val onItemLongClicked: (Books, View) -> Boolean,
-) : ListAdapter<Books, BookListAdapter.BookViewHolder>(DiffCallback) {
+    private val onItemClicked: (Book) -> Unit,
+    private val onItemLongClicked: (Book) -> Boolean,
+) : ListAdapter<Book, BookListAdapter.BookViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         return BookViewHolder(
@@ -28,25 +28,28 @@ class BookListAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(
-            book: Books,
-            onItemClicked: (Books) -> Unit,
-            onItemLongClicked: (Books, View) -> Boolean,
+            book: Book,
+            onItemClicked: (Book) -> Unit,
+            onItemLongClicked: (Book) -> Boolean,
         ) {
             binding.apply {
                 bookName.text = book.name
+                bookCoverImage.setImageResource(book.cover)
+                book.card = bookItemCard
+                book.card?.isChecked = false
                 bookItemCard.setOnClickListener { onItemClicked(book) }
-                bookItemCard.setOnLongClickListener { onItemLongClicked(book, itemView) }
+                bookItemCard.setOnLongClickListener { onItemLongClicked(book) }
             }
         }
     }
 
     companion object {
-        private val DiffCallback = object : DiffUtil.ItemCallback<Books>() {
-            override fun areItemsTheSame(oldItem: Books, newItem: Books): Boolean {
+        private val DiffCallback = object : DiffUtil.ItemCallback<Book>() {
+            override fun areItemsTheSame(oldItem: Book, newItem: Book): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: Books, newItem: Books): Boolean {
+            override fun areContentsTheSame(oldItem: Book, newItem: Book): Boolean {
                 return oldItem.uri == newItem.uri && oldItem.page == newItem.page
             }
         }

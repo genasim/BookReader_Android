@@ -1,58 +1,64 @@
 package genadimk.bookreader.viewmodels
 
-import android.view.View
 import androidx.lifecycle.*
-import com.google.android.material.card.MaterialCardView
+import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.model.BookDao
-import genadimk.bookreader.model.Books
+import genadimk.bookreader.model.BookEntry
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val bookDao: BookDao) :
     ViewModel() {
 
-    val allBookEntriesLive: LiveData<List<Books>> = bookDao.getAllBooks().asLiveData()
+    val allBookEntriesLive: LiveData<List<BookEntry>> = bookDao.getAllBooks().asLiveData()
+    private val bookList: MutableList<Book> = mutableListOf()
 
-    fun addBook() {
-        val newBook = createNewBookEntry("Clean code")
-        insert(newBook)
+    fun updateBookList(bookEntries: List<BookEntry>): List<Book> {
+        val newList = mutableListOf<Book>()
+        bookEntries.forEach { newList.add(Book.Builder(it).build()) }
+
+        bookList.apply {
+            clear()
+            addAll(newList)
+        }
+
+        return newList
     }
 
-    private fun createNewBookEntry(name: String): Books = Books(
+    fun noBooksAreChecked(): Boolean =
+        bookList.all { it.card?.isChecked == false }
+
+    fun addBook() {
+        val newEntry = createNewBookEntry("Clean Code")
+        insert(newEntry)
+    }
+
+    private fun createNewBookEntry(name: String): BookEntry = BookEntry(
         name = name,
         uri = "",
         page = 0,
-        checked = 0
+        current = 0
     )
 
-    private fun insert(book: Books) = viewModelScope.launch {
+    private fun insert(book: BookEntry) = viewModelScope.launch {
         bookDao.insert(book)
     }
 
-    fun checkCurrent(book: Books, view: View) {
-        val updatedBook = book.copy(checked = 1)
+    fun checkCurrent(book: BookEntry) {
+        val updatedBook = book.copy(current = 1)
         update(updatedBook)
-        (view as MaterialCardView).isChecked = true
     }
 
-    fun uncheckCurrent(book: Books, view: View) {
-        val updatedBook = book.copy(checked = 0)
+    fun uncheckCurrent(book: BookEntry) {
+        val updatedBook = book.copy(current = 0)
         update(updatedBook)
-        (view as MaterialCardView).isChecked = false
     }
 
-    private fun createCopyEntry(
-        book: Books,
-        name: String = book.name,
-        uri: String = book.uri,
-        page: Int = book.page,
-        checked: Int = book.checked,
-    ) = Books(book.id, name, uri, page, checked)
-
-    private fun update(book: Books) = viewModelScope.launch {
+    private fun update(book: BookEntry) = viewModelScope.launch {
         bookDao.update(book)
     }
 
-    fun delete(book: Books) = viewModelScope.launch {
+
+    fun delete(book: BookEntry) = viewModelScope.launch {
         bookDao.delete(book)
     }
 }
