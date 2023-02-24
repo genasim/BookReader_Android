@@ -1,18 +1,15 @@
 package genadimk.bookreader.view.floatingButton
 
-import androidx.recyclerview.widget.RecyclerView
 import genadimk.bookreader.R
 import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.booklist.BookListViewAdapter
-import genadimk.bookreader.booklist.Repository
+import genadimk.bookreader.viewmodels.HomeViewModel
 import java.util.function.Predicate
 
 class ButtonRemove(
-    private val bookData: Repository,
+    private val viewModel: HomeViewModel,
 ) :
     ButtonHandler {
-
-    lateinit var adapter: RecyclerView.Adapter<*>
 
     override val imageRes: Int
         get() = R.drawable.ic_delete
@@ -23,16 +20,14 @@ class ButtonRemove(
 
     private fun removeCheckedItems() {
         val predicate = Predicate { bookItem: Book -> bookItem.isChecked }
-        bookData.getRepository()
+        viewModel.getBookList()
             .filter { predicate.test(it) }
             .forEach { removeItem(it) }
 
         AppFloatingButton.apply { buttonHandler = buttonAdder }
     }
 
-    private fun removeItem(item: Book) {
-        with(adapter as BookListViewAdapter) {
-            notifyItemRemoved(bookData.removeItem(item))
-        }
+    private fun removeItem(book: Book) {
+        viewModel.removeBook(book)
     }
 }

@@ -1,16 +1,19 @@
 package genadimk.bookreader.viewmodels
 
+import android.net.Uri
 import androidx.lifecycle.*
 import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.model.BookDao
 import genadimk.bookreader.model.BookEntry
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class HomeViewModel(private val bookDao: BookDao) :
     ViewModel() {
 
     val allBookEntriesLive: LiveData<List<BookEntry>> = bookDao.getAllBooks().asLiveData()
     private val bookList: MutableList<Book> = mutableListOf()
+
+    fun getBookList() = bookList.toList()
 
     fun updateBookList(bookEntries: List<BookEntry>): List<Book> {
         val newList = mutableListOf<Book>()
@@ -27,21 +30,20 @@ class HomeViewModel(private val bookDao: BookDao) :
     fun noBooksAreChecked(): Boolean =
         bookList.all { it.card?.isChecked == false }
 
-    fun addBook() {
-        val newEntry = createNewBookEntry("Clean Code")
-        insert(newEntry)
+    fun addBook(uri: Uri?) {
+        uri?.let {
+            val newEntry = createNewBookEntry(it)
+            insert(newEntry)
+        }
     }
 
-    private fun createNewBookEntry(name: String): BookEntry = BookEntry(
-        name = name,
-        uri = "",
+    private fun createNewBookEntry(uri: Uri): BookEntry = BookEntry(
+        name = uri.lastPathSegment.toString(),
+        uri = uri.toString(),
         page = 0,
         current = 0
     )
 
-    private fun insert(book: BookEntry) = viewModelScope.launch {
-        bookDao.insert(book)
-    }
 
     fun checkCurrent(book: BookEntry) {
         val updatedBook = book.copy(current = 1)
@@ -53,13 +55,29 @@ class HomeViewModel(private val bookDao: BookDao) :
         update(updatedBook)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun removeBook(book: Book) {
+        val result = viewModelScope.async { getItem(book.id) }
+        result.invokeOnCompletion {
+            if (it == null)
+                delete(result.getCompleted())
+        }
+    }
+
+    private fun insert(book: BookEntry) = viewModelScope.launch {
+        bookDao.insert(book)
+    }
+
     private fun update(book: BookEntry) = viewModelScope.launch {
         bookDao.update(book)
     }
 
-
-    fun delete(book: BookEntry) = viewModelScope.launch {
+    private fun delete(book: BookEntry) = viewModelScope.launch {
         bookDao.delete(book)
+    }
+
+    private suspend fun getItem(id: Int) = withContext(Dispatchers.IO) {
+        bookDao.getBook(id)
     }
 }
 

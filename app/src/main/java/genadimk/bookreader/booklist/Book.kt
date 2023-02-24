@@ -10,6 +10,7 @@ class Book private constructor(
     bookEntry: BookEntry,
     val cover: Int,
 ) {
+    val id: Int = bookEntry.id
     val name: String = bookEntry.name
     val uri: Uri = Uri.Builder().path(bookEntry.uri).build()
 
