@@ -3,16 +3,16 @@ package genadimk.bookreader.view.floatingButton
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
+import androidx.activity.result.ActivityResultLauncher
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import genadimk.bookreader.R
 import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.booklist.BookListViewAdapter
-import genadimk.bookreader.booklist.BookRepository
 import genadimk.bookreader.view.HomeFragment
 
-class ButtonAdd :
+class ButtonAdd(private val contentPicker: ActivityResultLauncher<String>) :
     ButtonHandler {
 
     lateinit var adapter: RecyclerView.Adapter<*>
@@ -21,14 +21,11 @@ class ButtonAdd :
         get() = R.drawable.ic_add
 
     override fun clickButton() {
-//        requestPermission()
-        HomeFragment.contentPicker.launch("application/pdf")
+        addItem()
     }
 
-    private fun addItem(newBook: Book) {
-        with(adapter as BookListViewAdapter) {
-            notifyItemInserted(BookRepository.addItem(newBook))
-        }
+    private fun addItem() {
+        contentPicker.launch("application/pdf")
     }
 
     private fun requestPermission() {
@@ -39,7 +36,7 @@ class ButtonAdd :
                 Manifest.permission.MANAGE_DOCUMENTS
             ) == PackageManager.PERMISSION_GRANTED -> {
                 //  Permission has been granted
-                HomeFragment.contentPicker.launch("application/pdf")
+                addItem()
             }
 
             ActivityCompat.shouldShowRequestPermissionRationale(

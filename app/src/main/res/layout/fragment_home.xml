@@ -20,17 +20,6 @@
         tools:listitem="@layout/book_list_item" />
 
     <Button
-        android:id="@+id/tempButton"
-        android:layout_width="135dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="44dp"
-        android:layout_marginBottom="16dp"
-        android:text="Add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <Button
         android:id="@+id/tempDelButton"
         android:layout_width="135dp"
         android:layout_height="43dp"

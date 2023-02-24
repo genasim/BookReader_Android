@@ -16,8 +16,6 @@ import genadimk.bookreader.MobileNavigationDirections
 import genadimk.bookreader.databinding.FragmentHomeBinding
 import genadimk.bookreader.model.BookListAdapter
 import genadimk.bookreader.model.BookReaderApplication
-import genadimk.bookreader.observer.CallbackProxy
-import genadimk.bookreader.observer.Observable
 import genadimk.bookreader.utils.TAG
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
 import genadimk.bookreader.viewmodels.HomeViewModel
@@ -36,16 +34,13 @@ class HomeFragment : Fragment() {
         )
     }
 
-    companion object : Observable by CallbackProxy() {
-        lateinit var contentPicker: ActivityResultLauncher<String>
+    companion object {
         lateinit var permissionRequest: ActivityResultLauncher<String>
     }
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-//            val newBook = BookRepository.createBookItem(uri)
-//            val index = BookRepository.addItem(newBook)
-//            binding.homeListView.adapter?.notifyItemInserted(index)
+            viewModel.addBook(uri)
         }
 
     private val requestPermission =
@@ -61,9 +56,9 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        AppFloatingButton.init(viewModel, getContent)
         AppFloatingButton.enable()
 
-        contentPicker = getContent
         permissionRequest = requestPermission
 
         return root
@@ -82,7 +77,7 @@ class HomeFragment : Fragment() {
                     card!!.isChecked = isChecked
                 }
                 when (book.isChecked) {
-                    true  -> AppFloatingButton.apply { buttonHandler = buttonRemover }
+                    true -> AppFloatingButton.apply { buttonHandler = buttonRemover }
 
                     false -> if (viewModel.noBooksAreChecked())
                         AppFloatingButton.apply { buttonHandler = buttonAdder }
@@ -98,9 +93,6 @@ class HomeFragment : Fragment() {
             adapter.submitList(newList)
             AppFloatingButton.apply { buttonHandler = buttonAdder }
         }
-
-        // TODO: Remove button
-        binding.tempButton.setOnClickListener { viewModel.addBook() }
 
         // TODO: Remove button
         binding.tempDelButton.setOnClickListener { showConfirmationBox() }
@@ -119,10 +111,8 @@ class HomeFragment : Fragment() {
             .setCancelable(true)
             .setMessage("Are you sure???")
             .setPositiveButton("Yes") { _, _ ->
-                viewModel.allBookEntriesLive.value?.let {
-                    for (book in it) {
-                        viewModel.delete(book)
-                    }
+                for (book in viewModel.getBookList()) {
+                    viewModel.removeBook(book)
                 }
             }
             .setNeutralButton("Cancel") { _, _ -> }

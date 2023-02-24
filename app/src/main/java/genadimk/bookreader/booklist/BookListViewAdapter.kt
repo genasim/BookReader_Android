@@ -22,10 +22,6 @@ class BookListViewAdapter :
     lateinit var parent: RecyclerView
         private set
 
-    init {
-        AppFloatingButton.buttonRemover.adapter = this
-        AppFloatingButton.buttonAdder.adapter = this
-    }
 
     class ItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val bookCard: MaterialCardView = view.findViewById(R.id.book_item_card) as MaterialCardView
