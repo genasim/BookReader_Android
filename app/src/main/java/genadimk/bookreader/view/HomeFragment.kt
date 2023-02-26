@@ -39,8 +39,10 @@ class HomeFragment : Fragment() {
     }
 
     private val getContent =
-        registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            viewModel.addBook(uri)
+        registerForActivityResult(ActivityResultContracts.GetContent()) {
+            it?.let {
+                viewModel.addBook(it, requireActivity().contentResolver)
+            }
         }
 
     private val requestPermission =

@@ -1,11 +1,14 @@
 package genadimk.bookreader.viewmodels
 
+import android.content.ContentResolver
 import android.net.Uri
+import android.provider.OpenableColumns
 import androidx.lifecycle.*
 import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.model.BookDao
 import genadimk.bookreader.model.BookEntry
 import kotlinx.coroutines.*
+import java.io.File
 
 class HomeViewModel(private val bookDao: BookDao) :
     ViewModel() {
@@ -30,20 +33,38 @@ class HomeViewModel(private val bookDao: BookDao) :
     fun noBooksAreChecked(): Boolean =
         bookList.all { it.card?.isChecked == false }
 
-    fun addBook(uri: Uri?) {
-        uri?.let {
-            val newEntry = createNewBookEntry(it)
+    fun addBook(uri: Uri, contentResolver: ContentResolver) {
+        val filename = getFilename(contentResolver, uri)
+        filename?.let {
+            val newEntry = createNewBookEntry(uri, filename)
             insert(newEntry)
         }
     }
 
-    private fun createNewBookEntry(uri: Uri): BookEntry = BookEntry(
-        name = uri.lastPathSegment.toString(),
+    private fun createNewBookEntry(uri: Uri, name: String): BookEntry = BookEntry(
+        name = name,
         uri = uri.toString(),
         page = 0,
         current = 0
     )
 
+    private fun getFilename(contentResolver: ContentResolver, uri: Uri): String? {
+        return when (uri.scheme) {
+            ContentResolver.SCHEME_CONTENT -> {
+                contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+                    cursor.moveToFirst()
+                    val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+                    cursor.getString(nameIndex);
+                }
+            }
+            ContentResolver.SCHEME_FILE -> {
+                uri.path?.let { path ->
+                    File(path).name
+                }
+            }
+            else -> null
+        }
+    }
 
     fun checkCurrent(book: BookEntry) {
         val updatedBook = book.copy(current = 1)

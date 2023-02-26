@@ -12,7 +12,7 @@ class Book private constructor(
 ) {
     val id: Int = bookEntry.id
     val name: String = bookEntry.name
-    val uri: Uri = Uri.Builder().path(bookEntry.uri).build()
+    val uri: Uri = Uri.parse(bookEntry.uri)
 
     var card: MaterialCardView? = null
     var isChecked: Boolean = false

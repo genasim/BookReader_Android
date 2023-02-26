@@ -44,6 +44,10 @@ class ReadviewFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        viewModel.currentBook.observe(viewLifecycleOwner) {
+
+        }
+
         BookRepository.currentBook?.let { book ->
             renderPdf(view, book)
         }
