@@ -1,20 +1,19 @@
 package genadimk.bookreader.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.model.BookRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 
 class ReadviewViewModel(private val repository: BookRepository) : ViewModel() {
-
-    private val dao = repository.database.getBookDao()
 
     private val _currentBook: MutableLiveData<Book> = MutableLiveData()
     val currentBook: LiveData<Book> = _currentBook
 
-    //    @OptIn(ExperimentalCoroutinesApi::class)
+//        @OptIn(ExperimentalCoroutinesApi::class)
 //    fun fetchCurrent() {
 //        val result = viewModelScope.async { getCurrentBook() }
 //        result.invokeOnCompletion {
@@ -26,6 +25,7 @@ class ReadviewViewModel(private val repository: BookRepository) : ViewModel() {
 //    private suspend fun getCurrentBook() = withContext(Dispatchers.IO) {
 //        dao.getCurrentBook()
 //    }
+
     fun fetchCurrent() {
         val currentBook = repository.currentBook
         try {

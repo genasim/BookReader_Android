@@ -64,6 +64,7 @@ class ReadviewFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
+        // TODO: Get page on close-up
 //        view?.let {
 //            val pdfViewCtrl: PDFViewCtrl = it.findViewById(R.id.pdfView)
 //            BookRepository.currentBook?.page = pdfViewCtrl.currentPage

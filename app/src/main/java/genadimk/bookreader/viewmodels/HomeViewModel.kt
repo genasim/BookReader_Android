@@ -12,9 +12,9 @@ import java.io.File
 
 class HomeViewModel(private val repository: BookRepository) :
     ViewModel() {
-    private val dao = repository.database.getBookDao()
 
-    val allBookEntriesLive: LiveData<List<BookEntry>> = dao.getAllBooks().asLiveData()
+    val allBookEntriesLive: LiveData<List<BookEntry>> =
+        repository.database.bookDao.getAllBooks().asLiveData()
     private val bookList: MutableList<Book> = mutableListOf()
 
     fun getBookList() = bookList.toList()
@@ -34,11 +34,11 @@ class HomeViewModel(private val repository: BookRepository) :
     fun noBooksAreChecked(): Boolean =
         bookList.all { it.card?.isChecked == false }
 
-    fun addBook(uri: Uri, contentResolver: ContentResolver) {
+    fun addBook(uri: Uri, contentResolver: ContentResolver) = viewModelScope.launch {
         val filename = getFilename(contentResolver, uri)
         filename?.let {
             val newEntry = createNewBookEntry(uri, filename)
-            insert(newEntry)
+            repository.insert(newEntry)
         }
     }
 
@@ -83,25 +83,28 @@ class HomeViewModel(private val repository: BookRepository) :
 
     }
 
-    private fun checkCurrent(book: BookEntry) {
+    private fun checkCurrent(book: BookEntry) = viewModelScope.launch {
         val updatedBook = book.copy(current = 1)
-        update(updatedBook)
+        repository.update(updatedBook)
     }
 
-    private fun uncheckCurrent(book: BookEntry) {
+    private fun uncheckCurrent(book: BookEntry) = viewModelScope.launch {
         val updatedBook = book.copy(current = 0)
-        update(updatedBook)
+        repository.update(updatedBook)
     }
 
 
     @OptIn(ExperimentalCoroutinesApi::class)
     fun removeBook(book: Book) {
-        val result = viewModelScope.async { getItem(book) }
+        val result = viewModelScope.async { repository.getItem(book) }
         result.invokeOnCompletion {
             if (it == null)
-                delete(result.getCompleted())
+                viewModelScope.launch {
+                    repository.delete(result.getCompleted())
+                }
         }
     }
+
 
     private fun createUpdatedBookEntry(
         name: String = "",
@@ -114,26 +117,6 @@ class HomeViewModel(private val repository: BookRepository) :
         page = page,
         current = current
     )
-
-    private fun insert(entry: BookEntry) = viewModelScope.launch {
-        dao.insert(entry)
-    }
-
-    private fun update(entry: BookEntry) = viewModelScope.launch {
-        dao.update(entry)
-    }
-
-    private fun delete(entry: BookEntry) = viewModelScope.launch {
-        dao.delete(entry)
-    }
-
-    private suspend fun getItem(book: Book) = withContext(Dispatchers.IO) {
-        dao.getBook(book.id)
-    }
-
-    private suspend fun getCurrent() = withContext(Dispatchers.IO) {
-        dao.getCurrentBook()
-    }
 }
 
 

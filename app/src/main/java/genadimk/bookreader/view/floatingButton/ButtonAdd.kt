@@ -7,8 +7,6 @@ import genadimk.bookreader.R
 class ButtonAdd(private val contentPicker: ActivityResultLauncher<Array<String>>) :
     ButtonHandler {
 
-    lateinit var adapter: RecyclerView.Adapter<*>
-
     override val imageRes: Int
         get() = R.drawable.ic_add
 
