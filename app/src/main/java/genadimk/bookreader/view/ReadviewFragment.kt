@@ -38,6 +38,8 @@ class ReadviewFragment : Fragment() {
         _binding = FragmentReadviewBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+//        viewModel.fetchCurrent()
+
         AppFloatingButton.disable()
 
         return root
@@ -45,12 +47,13 @@ class ReadviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.currentBook.observe(viewLifecycleOwner) {
-
+//            val book = Book.Builder(it).build()
+//            renderPdf(view, book)
         }
 
-        BookRepository.currentBook?.let { book ->
-            renderPdf(view, book)
-        }
+//        BookRepository.currentBook?.let { book ->
+//            renderPdf(view, book)
+//        }
     }
 
     override fun onDestroyView() {

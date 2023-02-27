@@ -41,12 +41,8 @@ class HomeViewModel(private val bookDao: BookDao) :
         }
     }
 
-    private fun createNewBookEntry(uri: Uri, name: String): BookEntry = BookEntry(
-        name = name,
-        uri = uri.toString(),
-        page = 0,
-        current = 0
-    )
+    private fun createNewBookEntry(uri: Uri, name: String): BookEntry =
+        createUpdatedBookEntry(name = name, uri = uri.toString())
 
     private fun getFilename(contentResolver: ContentResolver, uri: Uri): String? {
         return when (uri.scheme) {
@@ -66,12 +62,12 @@ class HomeViewModel(private val bookDao: BookDao) :
         }
     }
 
-    fun checkCurrent(book: BookEntry) {
+    private fun checkCurrent(book: BookEntry) {
         val updatedBook = book.copy(current = 1)
         update(updatedBook)
     }
 
-    fun uncheckCurrent(book: BookEntry) {
+    private fun uncheckCurrent(book: BookEntry) {
         val updatedBook = book.copy(current = 0)
         update(updatedBook)
     }
@@ -84,6 +80,18 @@ class HomeViewModel(private val bookDao: BookDao) :
                 delete(result.getCompleted())
         }
     }
+
+    private fun createUpdatedBookEntry(
+        name: String = "",
+        uri: String = "",
+        page: Int = 0,
+        current: Int = 0,
+    ): BookEntry = BookEntry(
+        name = name,
+        uri = uri,
+        page = page,
+        current = current
+    )
 
     private fun insert(entry: BookEntry) = viewModelScope.launch {
         bookDao.insert(entry)

@@ -19,16 +19,16 @@ class ReadviewViewModel(private val bookDao: BookDao) : ViewModel() {
     val currentBook: LiveData<BookEntry> = _currentBook
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun fetchBook(book: Book) {
-        val result = viewModelScope.async { getItem(book.id) }
+    fun fetchCurrent() {
+        val result = viewModelScope.async { getCurrentBook() }
         result.invokeOnCompletion {
             if (it == null)
                 _currentBook.postValue(result.getCompleted())
         }
     }
 
-    private suspend fun getItem(id: Int) = withContext(Dispatchers.IO) {
-        bookDao.getBook(id)
+    private suspend fun getCurrentBook() = withContext(Dispatchers.IO) {
+        bookDao.getCurrentBook()
     }
 }
 

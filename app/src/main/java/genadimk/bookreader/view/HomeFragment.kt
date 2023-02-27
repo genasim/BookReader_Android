@@ -34,20 +34,11 @@ class HomeFragment : Fragment() {
         )
     }
 
-    companion object {
-        lateinit var permissionRequest: ActivityResultLauncher<String>
-    }
-
     private val getContent =
         registerForActivityResult(ActivityResultContracts.GetContent()) {
             it?.let {
                 viewModel.addBook(it, requireActivity().contentResolver)
             }
-        }
-
-    private val requestPermission =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            Log.i(TAG, "Permission granted -> $it")
         }
 
     override fun onCreateView(
@@ -60,8 +51,6 @@ class HomeFragment : Fragment() {
 
         AppFloatingButton.init(viewModel, getContent)
         AppFloatingButton.enable()
-
-        permissionRequest = requestPermission
 
         return root
     }
@@ -95,9 +84,6 @@ class HomeFragment : Fragment() {
             adapter.submitList(newList)
             AppFloatingButton.apply { buttonHandler = buttonAdder }
         }
-
-        // TODO: Remove button
-        binding.tempDelButton.setOnClickListener { showConfirmationBox() }
 
         AppFloatingButton.apply { buttonHandler = buttonAdder }
     }

@@ -15,6 +15,6 @@ data class BookEntry(
     val uri: String,
     @NonNull @ColumnInfo(name = "page", defaultValue = "0")
     val page: Int,
-    @NonNull @ColumnInfo(name = "checked", defaultValue = "0")
+    @NonNull @ColumnInfo(name = "current", defaultValue = "0")
     val current: Int,
 )
