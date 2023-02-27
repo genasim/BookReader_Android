@@ -15,15 +15,15 @@ class HomeViewModel(private val repository: BookRepository) :
 
     val allBookEntriesLive: LiveData<List<BookEntry>> =
         repository.database.bookDao.getAllBooks().asLiveData()
-    private val bookList: MutableList<Book> = mutableListOf()
 
-    fun getBookList() = bookList.toList()
+    private val _bookList: MutableList<Book> = mutableListOf()
+    fun getBookList() = _bookList.toList()
 
     fun updateBookList(bookEntries: List<BookEntry>): List<Book> {
         val newList = mutableListOf<Book>()
         bookEntries.forEach { newList.add(Book.Builder(it).build()) }
 
-        bookList.apply {
+        _bookList.apply {
             clear()
             addAll(newList)
         }
@@ -32,18 +32,15 @@ class HomeViewModel(private val repository: BookRepository) :
     }
 
     fun noBooksAreChecked(): Boolean =
-        bookList.all { it.card?.isChecked == false }
+        _bookList.all { it.card?.isChecked == false }
 
     fun addBook(uri: Uri, contentResolver: ContentResolver) = viewModelScope.launch {
         val filename = getFilename(contentResolver, uri)
         filename?.let {
-            val newEntry = createNewBookEntry(uri, filename)
+            val newEntry = repository.createNewBookEntry(uri, filename)
             repository.insert(newEntry)
         }
     }
-
-    private fun createNewBookEntry(uri: Uri, name: String): BookEntry =
-        createUpdatedBookEntry(name = name, uri = uri.toString())
 
     private fun getFilename(contentResolver: ContentResolver, uri: Uri): String? {
         return when (uri.scheme) {
@@ -63,60 +60,15 @@ class HomeViewModel(private val repository: BookRepository) :
         }
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun updateCurrentBook(book: Book) {
-        if (repository.currentBook == book)
-            return
-
-        repository.currentBook = book
-
-//        val result = viewModelScope.async { getCurrent() }
-//        result.invokeOnCompletion {
-//            if (it == null)
-//                uncheckCurrent(result.getCompleted())
-//        }
-//
-//        with(book) {
-//            val entryToUpdate = createUpdatedBookEntry(name, uri.toString(), page, 1)
-//            checkCurrent(entryToUpdate)
-//        }
-
+    fun removeBook(book: Book) = runBlocking {
+        val result = repository.getItem(book)
+        repository.delete(result)
     }
 
-    private fun checkCurrent(book: BookEntry) = viewModelScope.launch {
-        val updatedBook = book.copy(current = 1)
-        repository.update(updatedBook)
+    fun updateCurrentBook(newBook: Book) = viewModelScope.launch {
+        val oldBook = getBookList().firstOrNull { it.current == 1}
+        repository.updateCurrentBook(newBook, oldBook)
     }
-
-    private fun uncheckCurrent(book: BookEntry) = viewModelScope.launch {
-        val updatedBook = book.copy(current = 0)
-        repository.update(updatedBook)
-    }
-
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    fun removeBook(book: Book) {
-        val result = viewModelScope.async { repository.getItem(book) }
-        result.invokeOnCompletion {
-            if (it == null)
-                viewModelScope.launch {
-                    repository.delete(result.getCompleted())
-                }
-        }
-    }
-
-
-    private fun createUpdatedBookEntry(
-        name: String = "",
-        uri: String = "",
-        page: Int = 0,
-        current: Int = 0,
-    ): BookEntry = BookEntry(
-        name = name,
-        uri = uri,
-        page = page,
-        current = current
-    )
 }
 
 

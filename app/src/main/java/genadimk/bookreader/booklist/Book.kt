@@ -13,10 +13,11 @@ class Book private constructor(
     val id: Int = bookEntry.id
     val name: String = bookEntry.name
     val uri: Uri = Uri.parse(bookEntry.uri)
+    var current = bookEntry.current
 
     var card: MaterialCardView? = null
-    var isChecked: Boolean = false
 
+    var isChecked: Boolean = false
     var page = 0
 
     class Builder(private val bookEntry: BookEntry) {

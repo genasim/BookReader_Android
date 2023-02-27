@@ -1,6 +1,7 @@
 package genadimk.bookreader.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,7 @@ import genadimk.bookreader.R
 import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.databinding.FragmentReadviewBinding
 import genadimk.bookreader.model.BookReaderApplication
+import genadimk.bookreader.utils.TAG
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
 import genadimk.bookreader.viewmodels.ReadviewViewModel
 import genadimk.bookreader.viewmodels.ReadviewViewModelFactory
@@ -40,8 +42,6 @@ class ReadviewFragment : Fragment() {
         _binding = FragmentReadviewBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        viewModel.fetchCurrent()
-
         AppFloatingButton.disable()
 
         return root
@@ -51,9 +51,12 @@ class ReadviewFragment : Fragment() {
         pdfViewCtrl = view.findViewById(R.id.pdfView)
         AppUtils.setupPDFViewCtrl(pdfViewCtrl)
         viewModel.currentBook.observe(viewLifecycleOwner) {
-            it?.let {
-                renderPdf(view, it)
+            if (it == null) {
+                Log.w(TAG, "Null")
+                viewModel.refreshCurrentBook()
             }
+
+            renderPdf(view, it)
         }
     }
 
