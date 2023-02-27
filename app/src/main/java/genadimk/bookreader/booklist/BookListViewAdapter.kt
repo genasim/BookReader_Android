@@ -17,7 +17,7 @@ class BookListViewAdapter :
     RecyclerView.Adapter<BookListViewAdapter.ItemViewHolder>() {
 
     private val data
-        get() = BookRepository.getRepository()
+        get() = BookRepositorySingle.getRepository()
 
     lateinit var parent: RecyclerView
         private set
@@ -70,7 +70,7 @@ class BookListViewAdapter :
     private fun setClickListener(item: Book, holder: ItemViewHolder) {
         item.card?.setOnClickListener {
             val action: NavDirections = MobileNavigationDirections.actionGlobalNavReadview()
-            BookRepository.currentBook = item
+            BookRepositorySingle.currentBook = item
             holder.view.findNavController().navigate(action)
         }
     }

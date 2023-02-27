@@ -1,8 +1,6 @@
 package genadimk.bookreader.booklist
 
-import android.net.Uri
-
-object BookRepository : Repository {
+object BookRepositorySingle : Repository {
     private val data = mutableListOf<Book>()
 
     var currentBook: Book? = null

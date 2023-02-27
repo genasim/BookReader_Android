@@ -27,7 +27,7 @@ class AppFloatingButton {
                 }
             }
 
-        fun init(viewModel: HomeViewModel, contentPicker: ActivityResultLauncher<String>) {
+        fun init(viewModel: HomeViewModel, contentPicker: ActivityResultLauncher<Array<String>>) {
             buttonAdder = ButtonAdd(contentPicker)
             buttonRemover = ButtonRemove(viewModel)
         }

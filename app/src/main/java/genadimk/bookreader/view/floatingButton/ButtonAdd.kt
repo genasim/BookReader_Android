@@ -4,7 +4,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.RecyclerView
 import genadimk.bookreader.R
 
-class ButtonAdd(private val contentPicker: ActivityResultLauncher<String>) :
+class ButtonAdd(private val contentPicker: ActivityResultLauncher<Array<String>>) :
     ButtonHandler {
 
     lateinit var adapter: RecyclerView.Adapter<*>
@@ -17,6 +17,6 @@ class ButtonAdd(private val contentPicker: ActivityResultLauncher<String>) :
     }
 
     private fun addItem() {
-        contentPicker.launch("application/pdf")
+        contentPicker.launch(arrayOf("application/pdf"))
     }
 }

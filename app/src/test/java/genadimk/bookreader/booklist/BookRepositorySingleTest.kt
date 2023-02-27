@@ -4,13 +4,13 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
 
-internal class BookRepositoryTest {
+internal class BookRepositorySingleTest {
 
     lateinit var data: Repository
 
     @Before
     fun setUp() {
-        data = BookRepository
+        data = BookRepositorySingle
     }
 
     @Test

@@ -1,11 +1,10 @@
 package genadimk.bookreader.view
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -16,7 +15,6 @@ import genadimk.bookreader.MobileNavigationDirections
 import genadimk.bookreader.databinding.FragmentHomeBinding
 import genadimk.bookreader.model.BookListAdapter
 import genadimk.bookreader.model.BookReaderApplication
-import genadimk.bookreader.utils.TAG
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
 import genadimk.bookreader.viewmodels.HomeViewModel
 import genadimk.bookreader.viewmodels.HomeViewModelFactory
@@ -30,14 +28,17 @@ class HomeFragment : Fragment() {
 
     private val viewModel: HomeViewModel by activityViewModels {
         HomeViewModelFactory(
-            (activity?.application as BookReaderApplication).database.getBookDao()
+            (activity?.application as BookReaderApplication).repository
         )
     }
 
     private val getContent =
-        registerForActivityResult(ActivityResultContracts.GetContent()) {
-            it?.let {
-                viewModel.addBook(it, requireActivity().contentResolver)
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) {
+            it?.let { uri ->
+                requireActivity().contentResolver.takePersistableUriPermission(
+                    uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
+                viewModel.addBook(uri, requireActivity().contentResolver)
             }
         }
 
@@ -59,7 +60,7 @@ class HomeFragment : Fragment() {
         val adapter = BookListAdapter(
             onItemClicked = {
                 val action: NavDirections = MobileNavigationDirections.actionGlobalNavReadview()
-                //  TODO: set current book to the one pressed
+                viewModel.updateCurrentBook(it)
                 findNavController().navigate(action)
             },
             onItemLongClicked = { book ->

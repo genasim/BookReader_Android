@@ -5,15 +5,16 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.lifecycle.*
 import genadimk.bookreader.booklist.Book
-import genadimk.bookreader.model.BookDao
 import genadimk.bookreader.model.BookEntry
+import genadimk.bookreader.model.BookRepository
 import kotlinx.coroutines.*
 import java.io.File
 
-class HomeViewModel(private val bookDao: BookDao) :
+class HomeViewModel(private val repository: BookRepository) :
     ViewModel() {
+    private val dao = repository.database.getBookDao()
 
-    val allBookEntriesLive: LiveData<List<BookEntry>> = bookDao.getAllBooks().asLiveData()
+    val allBookEntriesLive: LiveData<List<BookEntry>> = dao.getAllBooks().asLiveData()
     private val bookList: MutableList<Book> = mutableListOf()
 
     fun getBookList() = bookList.toList()
@@ -62,6 +63,26 @@ class HomeViewModel(private val bookDao: BookDao) :
         }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun updateCurrentBook(book: Book) {
+        if (repository.currentBook == book)
+            return
+
+        repository.currentBook = book
+
+//        val result = viewModelScope.async { getCurrent() }
+//        result.invokeOnCompletion {
+//            if (it == null)
+//                uncheckCurrent(result.getCompleted())
+//        }
+//
+//        with(book) {
+//            val entryToUpdate = createUpdatedBookEntry(name, uri.toString(), page, 1)
+//            checkCurrent(entryToUpdate)
+//        }
+
+    }
+
     private fun checkCurrent(book: BookEntry) {
         val updatedBook = book.copy(current = 1)
         update(updatedBook)
@@ -72,9 +93,10 @@ class HomeViewModel(private val bookDao: BookDao) :
         update(updatedBook)
     }
 
+
     @OptIn(ExperimentalCoroutinesApi::class)
     fun removeBook(book: Book) {
-        val result = viewModelScope.async { getItem(book.id) }
+        val result = viewModelScope.async { getItem(book) }
         result.invokeOnCompletion {
             if (it == null)
                 delete(result.getCompleted())
@@ -94,19 +116,23 @@ class HomeViewModel(private val bookDao: BookDao) :
     )
 
     private fun insert(entry: BookEntry) = viewModelScope.launch {
-        bookDao.insert(entry)
+        dao.insert(entry)
     }
 
     private fun update(entry: BookEntry) = viewModelScope.launch {
-        bookDao.update(entry)
+        dao.update(entry)
     }
 
     private fun delete(entry: BookEntry) = viewModelScope.launch {
-        bookDao.delete(entry)
+        dao.delete(entry)
     }
 
-    private suspend fun getItem(id: Int) = withContext(Dispatchers.IO) {
-        bookDao.getBook(id)
+    private suspend fun getItem(book: Book) = withContext(Dispatchers.IO) {
+        dao.getBook(book.id)
+    }
+
+    private suspend fun getCurrent() = withContext(Dispatchers.IO) {
+        dao.getCurrentBook()
     }
 }
 
@@ -114,11 +140,11 @@ class HomeViewModel(private val bookDao: BookDao) :
 /**
  * Factory class to instantiate the [HomeViewModel] instance.
  */
-class HomeViewModelFactory(private val bookDao: BookDao) : ViewModelProvider.Factory {
+class HomeViewModelFactory(private val repository: BookRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(HomeViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return HomeViewModel(bookDao) as T
+            return HomeViewModel(repository) as T
         }
         throw IllegalArgumentException("View model not inherited from [HomeViewModel]")
     }
