@@ -1,7 +1,7 @@
 package genadimk.bookreader.view.floatingButton
 
 import genadimk.bookreader.R
-import genadimk.bookreader.booklist.Book
+import genadimk.bookreader.model.Book
 import genadimk.bookreader.viewmodels.HomeViewModel
 import java.util.function.Predicate
 

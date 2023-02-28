@@ -1,12 +1,12 @@
-package genadimk.bookreader.model
+package genadimk.bookreader.view
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.databinding.BookListItemBinding
+import genadimk.bookreader.model.Book
 
 class BookListAdapter(
     private val onItemClicked: (Book) -> Unit,

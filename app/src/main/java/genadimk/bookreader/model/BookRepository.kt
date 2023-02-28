@@ -4,7 +4,8 @@ import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import genadimk.bookreader.booklist.Book
+import genadimk.bookreader.model.room.BookDatabase
+import genadimk.bookreader.model.room.BookEntry
 import genadimk.bookreader.utils.asBookEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking

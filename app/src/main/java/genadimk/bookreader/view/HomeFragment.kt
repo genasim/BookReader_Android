@@ -13,8 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import genadimk.bookreader.MobileNavigationDirections
 import genadimk.bookreader.databinding.FragmentHomeBinding
-import genadimk.bookreader.model.BookListAdapter
-import genadimk.bookreader.model.BookReaderApplication
+import genadimk.bookreader.BookReaderApplication
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
 import genadimk.bookreader.viewmodels.HomeViewModel
 import genadimk.bookreader.viewmodels.HomeViewModelFactory

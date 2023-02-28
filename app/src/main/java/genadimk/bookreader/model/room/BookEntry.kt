@@ -1,4 +1,4 @@
-package genadimk.bookreader.model
+package genadimk.bookreader.model.room
 
 import androidx.annotation.NonNull
 import androidx.room.ColumnInfo

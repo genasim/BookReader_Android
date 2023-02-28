@@ -1,6 +1,7 @@
-package genadimk.bookreader.model
+package genadimk.bookreader
 
 import androidx.multidex.MultiDexApplication
+import genadimk.bookreader.model.BookRepository
 
 class BookReaderApplication : MultiDexApplication() {
 

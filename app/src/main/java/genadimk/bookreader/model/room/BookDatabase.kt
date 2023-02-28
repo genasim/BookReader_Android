@@ -1,4 +1,4 @@
-package genadimk.bookreader.model
+package genadimk.bookreader.model.room
 
 import android.content.Context
 import androidx.room.Database

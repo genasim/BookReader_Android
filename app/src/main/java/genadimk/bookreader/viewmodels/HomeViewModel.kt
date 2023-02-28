@@ -3,8 +3,8 @@ package genadimk.bookreader.viewmodels
 import android.content.ContentResolver
 import android.net.Uri
 import androidx.lifecycle.*
-import genadimk.bookreader.booklist.Book
-import genadimk.bookreader.model.BookEntry
+import genadimk.bookreader.model.Book
+import genadimk.bookreader.model.room.BookEntry
 import genadimk.bookreader.model.BookRepository
 import genadimk.bookreader.utils.getFilename
 import kotlinx.coroutines.*

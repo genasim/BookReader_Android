@@ -3,8 +3,8 @@ package genadimk.bookreader.utils
 import android.content.ContentResolver
 import android.net.Uri
 import android.provider.OpenableColumns
-import genadimk.bookreader.booklist.Book
-import genadimk.bookreader.model.BookEntry
+import genadimk.bookreader.model.Book
+import genadimk.bookreader.model.room.BookEntry
 import java.io.File
 
 fun Book.asBookEntry(): BookEntry =

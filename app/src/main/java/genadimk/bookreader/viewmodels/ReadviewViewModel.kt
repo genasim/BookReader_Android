@@ -1,7 +1,7 @@
 package genadimk.bookreader.viewmodels
 
 import androidx.lifecycle.*
-import genadimk.bookreader.booklist.Book
+import genadimk.bookreader.model.Book
 import genadimk.bookreader.model.BookRepository
 import genadimk.bookreader.utils.asBook
 import kotlinx.coroutines.*

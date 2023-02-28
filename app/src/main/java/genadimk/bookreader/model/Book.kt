@@ -1,10 +1,10 @@
-package genadimk.bookreader.booklist
+package genadimk.bookreader.model
 
 import android.net.Uri
 import androidx.annotation.DrawableRes
 import com.google.android.material.card.MaterialCardView
 import genadimk.bookreader.R
-import genadimk.bookreader.model.BookEntry
+import genadimk.bookreader.model.room.BookEntry
 
 class Book private constructor(
     bookEntry: BookEntry,

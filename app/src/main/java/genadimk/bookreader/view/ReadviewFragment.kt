@@ -9,9 +9,9 @@ import androidx.fragment.app.activityViewModels
 import com.pdftron.pdf.PDFViewCtrl
 import com.pdftron.pdf.utils.AppUtils
 import genadimk.bookreader.R
-import genadimk.bookreader.booklist.Book
+import genadimk.bookreader.model.Book
 import genadimk.bookreader.databinding.FragmentReadviewBinding
-import genadimk.bookreader.model.BookReaderApplication
+import genadimk.bookreader.BookReaderApplication
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
 import genadimk.bookreader.viewmodels.ReadviewViewModel
 import genadimk.bookreader.viewmodels.ReadviewViewModelFactory
