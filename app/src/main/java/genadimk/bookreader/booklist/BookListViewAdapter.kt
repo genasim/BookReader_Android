@@ -11,21 +11,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import genadimk.bookreader.MobileNavigationDirections
 import genadimk.bookreader.R
-import genadimk.bookreader.ui.floatingButton.AppFloatingButton
+import genadimk.bookreader.view.floatingButton.AppFloatingButton
 
 class BookListViewAdapter :
     RecyclerView.Adapter<BookListViewAdapter.ItemViewHolder>() {
 
     private val data
-        get() = BookRepository.getRepository()
+        get() = BookRepositorySingle.getRepository()
 
     lateinit var parent: RecyclerView
         private set
 
-    init {
-        AppFloatingButton.buttonRemover.adapter = this
-        AppFloatingButton.buttonAdder.adapter = this
-    }
 
     class ItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val bookCard: MaterialCardView = view.findViewById(R.id.book_item_card) as MaterialCardView
@@ -47,7 +43,7 @@ class BookListViewAdapter :
             book.card = this.bookCard
             book.card?.isChecked = false
             bookCover.setImageResource(book.cover)
-            bookName.text = book.name
+//            bookName.text = book.name
             isChecked = book.isChecked
         }
 
@@ -74,7 +70,7 @@ class BookListViewAdapter :
     private fun setClickListener(item: Book, holder: ItemViewHolder) {
         item.card?.setOnClickListener {
             val action: NavDirections = MobileNavigationDirections.actionGlobalNavReadview()
-            BookRepository.currentBook = item
+            BookRepositorySingle.currentBook = item
             holder.view.findNavController().navigate(action)
         }
     }

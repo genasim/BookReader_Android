@@ -1,4 +1,4 @@
-package genadimk.bookreader.ui.mainActivity
+package genadimk.bookreader.view
 
 import android.os.Bundle
 import android.view.Menu
@@ -12,7 +12,7 @@ import androidx.navigation.ui.*
 import com.google.android.material.navigation.NavigationView
 import genadimk.bookreader.R
 import genadimk.bookreader.databinding.ActivityMainBinding
-import genadimk.bookreader.ui.floatingButton.AppFloatingButton
+import genadimk.bookreader.view.floatingButton.AppFloatingButton
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navController: NavController
 
-    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +30,6 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.appBarMain.toolbar)
 
         AppFloatingButton.button = binding.appBarMain.floatingButton
-        AppFloatingButton.apply { buttonHandler = buttonAdder }
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         navController = findNavController(R.id.nav_host_fragment)

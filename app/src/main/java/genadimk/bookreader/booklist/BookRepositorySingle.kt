@@ -1,8 +1,6 @@
 package genadimk.bookreader.booklist
 
-import android.net.Uri
-
-object BookRepository : Repository {
+object BookRepositorySingle : Repository {
     private val data = mutableListOf<Book>()
 
     var currentBook: Book? = null
@@ -20,15 +18,15 @@ object BookRepository : Repository {
         return position
     }
 
-    fun createBookItem(_uri: Uri?): Book {
-        val uri = _uri ?: return Book.Builder().build()
-
+//    fun createBookItem(_uri: Uri?): Book {
+//        val uri = _uri ?: return Book.Builder().build()
+//
+////        val fileName = uri.lastPathSegment
 //        val fileName = uri.lastPathSegment
-        val fileName = uri.lastPathSegment
-
-        return Book.Builder()
-            .uri(uri)
-            .name(fileName!!)
-            .build()
-    }
+//
+//        return Book.Builder()
+//            .uri(uri)
+//            .name(fileName!!)
+//            .build()
+//    }
 }
