@@ -14,11 +14,10 @@ class Book private constructor(
     val name: String = bookEntry.name
     val uri: Uri = Uri.parse(bookEntry.uri)
     var current = bookEntry.current
+    var page = bookEntry.page
 
     var card: MaterialCardView? = null
-
     var isChecked: Boolean = false
-    var page = 0
 
     class Builder(private val bookEntry: BookEntry) {
         private var cover: Int = R.drawable.ic_launcher_background

@@ -2,23 +2,22 @@ package genadimk.bookreader.viewmodels
 
 import androidx.lifecycle.*
 import genadimk.bookreader.booklist.Book
-import genadimk.bookreader.model.BookEntry
 import genadimk.bookreader.model.BookRepository
+import genadimk.bookreader.utils.asBook
 import kotlinx.coroutines.*
 
 class ReadviewViewModel(private val repository: BookRepository) : ViewModel() {
 
     val currentBook = repository.currentBook
 
-    fun refreshCurrentBook() = viewModelScope.launch {
-//        refreshFromDatabase()
+    fun refreshCurrentBook() = runBlocking {
+        val result = repository.getCurrent()
+        repository.updateCurrentBook(result.asBook(), null)
     }
 
-//    suspend fun refreshFromDatabase() = withContext(Dispatchers.IO) {
-//        val result = async { repository.database.bookDao.getCurrentBook() }.await()
-//        _currentBook.postValue(result)
-//    }
-
+    fun setCurrentPage(book: Book) {
+        repository.updateCurrentBook(book, null)
+    }
 }
 
 /**

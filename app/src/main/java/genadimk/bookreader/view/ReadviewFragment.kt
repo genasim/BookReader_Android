@@ -1,7 +1,6 @@
 package genadimk.bookreader.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import genadimk.bookreader.R
 import genadimk.bookreader.booklist.Book
 import genadimk.bookreader.databinding.FragmentReadviewBinding
 import genadimk.bookreader.model.BookReaderApplication
-import genadimk.bookreader.utils.TAG
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
 import genadimk.bookreader.viewmodels.ReadviewViewModel
 import genadimk.bookreader.viewmodels.ReadviewViewModelFactory
@@ -50,13 +48,14 @@ class ReadviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         pdfViewCtrl = view.findViewById(R.id.pdfView)
         AppUtils.setupPDFViewCtrl(pdfViewCtrl)
-        viewModel.currentBook.observe(viewLifecycleOwner) {
-            if (it == null) {
-                Log.w(TAG, "Null")
-                viewModel.refreshCurrentBook()
-            }
 
-            renderPdf(view, it)
+        with(viewModel.currentBook) {
+            if (this.value == null)
+                viewModel.refreshCurrentBook()
+
+            observe(viewLifecycleOwner) {
+                renderPdf(it)
+            }
         }
     }
 
@@ -67,15 +66,15 @@ class ReadviewFragment : Fragment() {
 
     override fun onStop() {
         super.onStop()
-        // TODO: Get page on close-up
-//        view?.let {
-//            val pdfViewCtrl: PDFViewCtrl = it.findViewById(R.id.pdfView)
-//            BookRepository.currentBook?.page = pdfViewCtrl.currentPage
-//        }
+        viewModel.currentBook.value?.let {
+            with(it) {
+                page = pdfViewCtrl.currentPage
+                viewModel.setCurrentPage(this)
+            }
+        }
     }
 
-    private fun renderPdf(view: View, book: Book) {
-        val pdfViewCtrl: PDFViewCtrl = view.findViewById(R.id.pdfView)
+    private fun renderPdf(book: Book) {
         AppUtils.setupPDFViewCtrl(pdfViewCtrl)
 
         try {

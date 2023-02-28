@@ -30,6 +30,13 @@ class BookRepository(private val application: Application) {
         update(newEntry)
     }
 
+    fun createNewBookEntry(uri: Uri, name: String): BookEntry = BookEntry(
+        name = name,
+        uri = uri.toString(),
+        page = 0,
+        current = 0
+    )
+
     suspend fun insert(entry: BookEntry) = withContext(Dispatchers.IO) {
         database.bookDao.insert(entry)
     }
@@ -46,14 +53,7 @@ class BookRepository(private val application: Application) {
         database.bookDao.getBook(book.id)
     }
 
-    private suspend fun getCurrent() = withContext(Dispatchers.IO) {
+    suspend fun getCurrent() = withContext(Dispatchers.IO) {
         database.bookDao.getCurrentBook()
     }
-
-    fun createNewBookEntry(uri: Uri, name: String): BookEntry = BookEntry(
-        name = name,
-        uri = uri.toString(),
-        page = 0,
-        current = 0
-    )
 }
