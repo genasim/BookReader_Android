@@ -3,6 +3,7 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven { url 'https://customers.pspdfkit.com/maven/' }
     }
 }
 dependencyResolutionManagement {
@@ -10,6 +11,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://customers.pspdfkit.com/maven/' }
+        maven { url "https://pdftron-maven.s3.amazonaws.com/release" }
     }
 }
 rootProject.name = "BookReader"

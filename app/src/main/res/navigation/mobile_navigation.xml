@@ -7,19 +7,18 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="genadimk.bookreader.ui.home.HomeFragment"
+        android:name="genadimk.bookreader.view.HomeFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="genadimk.bookreader.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_readview"
+        android:name="genadimk.bookreader.view.ReadviewFragment"
+        android:label="@string/menu_readview"
+        tools:layout="@layout/fragment_readview" >
+    </fragment>
 
-    <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="genadimk.bookreader.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+    <action
+        android:id="@+id/action_global_nav_readview"
+        app:destination="@id/nav_readview" />
 </navigation>

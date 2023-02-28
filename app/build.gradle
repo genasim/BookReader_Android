@@ -1,20 +1,24 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.devtools.ksp' version '1.8.0-1.0.8'
 }
 
 android {
     namespace 'genadimk.bookreader'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "genadimk.bookreader"
         minSdk 26
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        manifestPlaceholders = [pdftronLicenseKey:PDFTRON_LICENSE_KEY]
     }
 
     buildTypes {
@@ -36,16 +40,45 @@ android {
 }
 
 dependencies {
+    // PdfTron libraries
+    implementation "com.pdftron:pdftron:9.4.2"
+    implementation "com.pdftron:tools:9.4.2"
+    implementation 'androidx.multidex:multidex:2.0.1'
 
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.7.0'
+
+    // Room libraries
+    implementation "androidx.room:room-runtime:2.5.0"
+    ksp "androidx.room:room-compiler:2.5.0"
+    implementation "androidx.room:room-ktx:2.5.0"
+
+    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
-    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Local unit tests
+    testImplementation "junit:junit:4.13.2"                         // JUnit 4 framework
+    testImplementation "androidx.test:core:1.5.0"                   // Robolectric environment
+    testImplementation "org.mockito:mockito-core:4.5.1"             // Mockito framework
+    testImplementation "org.mockito.kotlin:mockito-kotlin:4.1.0"    // mockito-kotlin
+    testImplementation "io.mockk:mockk:1.10.5"                      // Mockk framework
+    testImplementation "com.google.truth:truth:1.1.3"               // Truth framework
+
+    // Instrumentation tests
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.37'
+    androidTestImplementation "junit:junit:4.13.2"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.1"
+    androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
+    androidTestImplementation "com.google.truth:truth:1.1.3"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test:core-ktx:1.4.0'
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:4.9.1"
+    androidTestImplementation "io.mockk:mockk-android:1.10.5"
+    androidTestImplementation 'androidx.test:runner:1.4.0'
 }
