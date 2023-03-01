@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pdftron.pdf.PDFViewCtrl
 import com.pdftron.pdf.utils.AppUtils
-import genadimk.bookreader.R
-import genadimk.bookreader.model.Book
-import genadimk.bookreader.databinding.FragmentReadviewBinding
 import genadimk.bookreader.BookReaderApplication
+import genadimk.bookreader.R
+import genadimk.bookreader.databinding.FragmentReadviewBinding
+import genadimk.bookreader.model.Book
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
 import genadimk.bookreader.viewmodels.ReadviewViewModel
 import genadimk.bookreader.viewmodels.ReadviewViewModelFactory
@@ -47,16 +50,24 @@ class ReadviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         pdfViewCtrl = view.findViewById(R.id.pdfView)
-        AppUtils.setupPDFViewCtrl(pdfViewCtrl)
 
-        with(viewModel.currentBook) {
-            if (this.value == null)
-                viewModel.refreshCurrentBook()
+        try {
+            with(viewModel.currentBook) {
+                if (this.value == null)
+                    viewModel.refreshCurrentBook()
 
-            observe(viewLifecycleOwner) {
-                renderPdf(it)
+                observe(viewLifecycleOwner) {
+                    renderPdf(it)
+                }
+            }
+        } catch (ex: NullPointerException) {
+            showAlertBox {
+                val action: NavDirections =
+                    ReadviewFragmentDirections.actionNavReadviewToNavHome()
+                findNavController().navigate(action)
             }
         }
+
     }
 
     override fun onDestroyView() {
@@ -89,5 +100,10 @@ class ReadviewFragment : Fragment() {
         (activity as MainActivity).supportActionBar?.title = book.name
     }
 
-
+    private fun showAlertBox(callback: () -> Unit) = MaterialAlertDialogBuilder(requireActivity())
+        .setTitle(R.string.alert_no_current_book_title)
+        .setPositiveButton("OK") { _, _ -> callback.invoke() }
+        .setCancelable(true)
+        .setMessage(R.string.alert_no_current_book_message)
+        .show()
 }

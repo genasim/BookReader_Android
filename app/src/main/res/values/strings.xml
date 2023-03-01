@@ -7,7 +7,11 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <!--  Navigation Drawer item names  -->
     <string name="menu_home">Home</string>
     <string name="menu_readview">Readview</string>
-    <string name="menu_slideshow">Slideshow</string>
+
+    <!--  Alert resources for Readview alert box  -->
+    <string name="alert_no_current_book_message">You have not opened any books yet to read. Add one and start reading!</string>
+    <string name="alert_no_current_book_title">No current book found</string>
 </resources>

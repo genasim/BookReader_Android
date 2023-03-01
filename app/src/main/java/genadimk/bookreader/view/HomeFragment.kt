@@ -11,9 +11,8 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import genadimk.bookreader.MobileNavigationDirections
-import genadimk.bookreader.databinding.FragmentHomeBinding
 import genadimk.bookreader.BookReaderApplication
+import genadimk.bookreader.databinding.FragmentHomeBinding
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
 import genadimk.bookreader.viewmodels.HomeViewModel
 import genadimk.bookreader.viewmodels.HomeViewModelFactory
@@ -58,7 +57,7 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val adapter = BookListAdapter(
             onItemClicked = {
-                val action: NavDirections = MobileNavigationDirections.actionGlobalNavReadview()
+                val action: NavDirections = HomeFragmentDirections.actionNavHomeToNavReadview()
                 viewModel.updateCurrentBook(it)
                 findNavController().navigate(action)
             },
