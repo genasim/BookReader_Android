@@ -42,6 +42,9 @@ class HomeViewModel(private val repository: BookRepository) :
     }
 
     fun removeBook(book: Book) = runBlocking {
+        if (book.current == 1)
+            repository.updateCurrentBook(null, null)
+
         val result = repository.getItem(book)
         repository.delete(result)
     }

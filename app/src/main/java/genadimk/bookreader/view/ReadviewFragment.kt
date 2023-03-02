@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.pdftron.pdf.PDFViewCtrl
@@ -57,13 +56,12 @@ class ReadviewFragment : Fragment() {
                     viewModel.refreshCurrentBook()
 
                 observe(viewLifecycleOwner) {
-                    renderPdf(it)
+                    renderPdf(it!!)
                 }
             }
-        } catch (ex: NullPointerException) {
+        } catch (ex: Exception) {
             showAlertBox {
-                val action: NavDirections =
-                    ReadviewFragmentDirections.actionNavReadviewToNavHome()
+                val action = ReadviewFragmentDirections.actionNavReadviewToNavHome()
                 findNavController().navigate(action)
             }
         }

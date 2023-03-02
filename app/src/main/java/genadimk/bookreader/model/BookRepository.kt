@@ -14,21 +14,25 @@ import kotlinx.coroutines.withContext
 class BookRepository(private val application: Application) {
     val database: BookDatabase by lazy { BookDatabase.getDatabase(application) }
 
-    private val _currentBook = MutableLiveData<Book>()
-    val currentBook: LiveData<Book> = _currentBook
+    private val _currentBook = MutableLiveData<Book?>()
+    val currentBook: LiveData<Book?> = _currentBook
 
-    fun updateCurrentBook(newBook: Book, oldBook: Book?) = runBlocking {
-        newBook.current = 1
-        _currentBook.postValue(newBook)
+    fun updateCurrentBook(newBook: Book?, oldBook: Book?) = runBlocking {
+        when (newBook) {
+            null -> _currentBook.postValue(null)
+            else -> {
+                newBook.current = 1
+                _currentBook.postValue(newBook)
+                val newEntry = newBook.asBookEntry()
+                update(newEntry)
+            }
+        }
 
         oldBook?.let {
             it.current = 0
-            val oldEntry = it.asBookEntry().copy(current = 0)
+            val oldEntry = it.asBookEntry()
             update(oldEntry)
         }
-
-        val newEntry = newBook.asBookEntry()
-        update(newEntry)
     }
 
     fun createNewBookEntry(uri: Uri, name: String): BookEntry = BookEntry(
