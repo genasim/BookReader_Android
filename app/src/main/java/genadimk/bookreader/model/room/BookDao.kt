@@ -8,10 +8,10 @@ interface BookDao {
     @Query("SELECT * FROM books ORDER BY name ASC")
     fun getAllBooks(): Flow<List<BookEntry>>
 
-    @Query("SELECT * from books WHERE id = :id")
+    @Query("SELECT * FROM books WHERE id = :id")
     fun getBook(id: Int): BookEntry
 
-    @Query("SELECT * from books WHERE current = 1")
+    @Query("SELECT * FROM books WHERE current = 1")
     fun getCurrentBook(): BookEntry
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)

@@ -12,7 +12,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class BookRepository(private val application: Application) {
-    val database: BookDatabase by lazy { BookDatabase.getDatabase(application) }
+    private val database: BookDatabase by lazy { BookDatabase.getDatabase(application) }
 
     private val _currentBook = MutableLiveData<Book?>()
     val currentBook: LiveData<Book?> = _currentBook
@@ -41,6 +41,8 @@ class BookRepository(private val application: Application) {
         page = 0,
         current = 0
     )
+
+    fun getBookEntries() = database.bookDao.getAllBooks()
 
     suspend fun insert(entry: BookEntry) = withContext(Dispatchers.IO) {
         database.bookDao.insert(entry)

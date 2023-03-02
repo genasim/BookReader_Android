@@ -13,7 +13,7 @@ class HomeViewModel(private val repository: BookRepository) :
     ViewModel() {
 
     val allBookEntriesLive: LiveData<List<BookEntry>> =
-        repository.database.bookDao.getAllBooks().asLiveData()
+        repository.getBookEntries().asLiveData()
 
     private val _bookList: MutableList<Book> = mutableListOf()
     fun getBookList() = _bookList.toList()
