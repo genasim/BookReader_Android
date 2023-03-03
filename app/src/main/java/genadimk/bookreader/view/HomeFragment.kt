@@ -11,8 +11,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 import genadimk.bookreader.BookReaderApplication
+import genadimk.bookreader.R
 import genadimk.bookreader.databinding.FragmentHomeBinding
+import genadimk.bookreader.utils.asBookEntry
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
 import genadimk.bookreader.viewmodels.HomeViewModel
 import genadimk.bookreader.viewmodels.HomeViewModelFactory
@@ -48,8 +51,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        AppFloatingButton.init(viewModel, getContent)
-        AppFloatingButton.enable()
+        AppFloatingButton.enable(viewModel, getContent, this::showConfirmationBox)
 
         return root
     }
@@ -68,12 +70,17 @@ class HomeFragment : Fragment() {
                 }
                 when (book.isChecked) {
                     true -> AppFloatingButton.apply { buttonHandler = buttonRemover }
-
                     false -> if (viewModel.noBooksAreChecked())
                         AppFloatingButton.apply { buttonHandler = buttonAdder }
                 }
 
                 true
+            },
+            onEditClicked = { book ->
+                showEditBox {
+                    val newBook = book.asBookEntry().copy(name = it?.text.toString())
+                    viewModel.updateBook(newBook)
+                }
             }
         )
 
@@ -92,17 +99,27 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private fun showConfirmationBox() {
+    private fun showConfirmationBox(callback: () -> Unit) {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Dialog alert title")
+            .setTitle(R.string.confirm_remove_title)
             .setCancelable(true)
-            .setMessage("Are you sure???")
-            .setPositiveButton("Yes") { _, _ ->
-                for (book in viewModel.getBookList()) {
-                    viewModel.removeBook(book)
-                }
-            }
-            .setNeutralButton("Cancel") { _, _ -> }
+            .setMessage(R.string.confirm_remove_message)
+//            .setView -> to provide custom layout
+            .setPositiveButton(R.string.confirm_remove_yes_button) { _, _ -> callback() }
+            .setNeutralButton(R.string.confirm_remove_cancel_button) { _, _ -> }
             .show()
+    }
+
+    private fun showEditBox(callback: (TextInputEditText?) -> Unit) {
+        var editText: TextInputEditText? = null
+        val alert = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(R.string.alert_edit_item_title)
+            .setCancelable(true)
+            .setView(R.layout.dialog_edit_item)
+            .setPositiveButton(R.string.alert_edit_item_yes_button) { _, _ -> callback(editText) }
+            .setNeutralButton(R.string.confirm_remove_cancel_button) { _, _ -> }
+            .show()
+
+        editText = alert.findViewById(R.id.edit_item_field)
     }
 }

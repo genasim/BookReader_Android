@@ -4,6 +4,7 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import genadimk.bookreader.viewmodels.HomeViewModel
+import kotlin.reflect.KFunction1
 
 class AppFloatingButton {
     companion object {
@@ -27,17 +28,15 @@ class AppFloatingButton {
                 }
             }
 
-        fun init(viewModel: HomeViewModel, contentPicker: ActivityResultLauncher<Array<String>>) {
+        fun enable(viewModel: HomeViewModel, contentPicker: ActivityResultLauncher<Array<String>>, confirmFunc: KFunction1<() -> Unit, Unit>) {
+            button?.visibility = View.VISIBLE
+
             buttonAdder = ButtonAdd(contentPicker)
-            buttonRemover = ButtonRemove(viewModel)
+            buttonRemover = ButtonRemove(viewModel, confirmFunc)
         }
 
         fun disable() {
             button?.visibility = View.GONE
-        }
-
-        fun enable() {
-            button?.visibility = View.VISIBLE
         }
     }
 }
