@@ -50,6 +50,10 @@ class HomeViewModel(private val repository: BookRepository) :
         val oldBook = getBookList().firstOrNull { it.current == 1 }
         repository.updateCurrentBook(newBook, oldBook)
     }
+
+    fun updateBook(entry: BookEntry) = viewModelScope.launch {
+        repository.update(entry)
+    }
 }
 
 

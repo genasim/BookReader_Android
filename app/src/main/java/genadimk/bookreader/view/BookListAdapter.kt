@@ -11,17 +11,18 @@ import genadimk.bookreader.model.Book
 class BookListAdapter(
     private val onItemClicked: (Book) -> Unit,
     private val onItemLongClicked: (Book) -> Boolean,
+    private val onEditClicked: (Book) -> Unit,
 ) : ListAdapter<Book, BookListAdapter.BookViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         return BookViewHolder(
-            BookListItemBinding.inflate(LayoutInflater.from(parent.context))
+            BookListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
     override fun onBindViewHolder(holder: BookViewHolder, position: Int) {
         val current = getItem(position)
-        holder.bind(current, onItemClicked, onItemLongClicked)
+        holder.bind(current, onItemClicked, onItemLongClicked, onEditClicked)
     }
 
     class BookViewHolder(private var binding: BookListItemBinding) :
@@ -31,6 +32,7 @@ class BookListAdapter(
             book: Book,
             onItemClicked: (Book) -> Unit,
             onItemLongClicked: (Book) -> Boolean,
+            onEditClicked: (Book) -> Unit,
         ) {
             binding.apply {
                 bookName.text = book.name
@@ -39,6 +41,7 @@ class BookListAdapter(
                 book.card?.isChecked = false
                 bookItemCard.setOnClickListener { onItemClicked(book) }
                 bookItemCard.setOnLongClickListener { onItemLongClicked(book) }
+                editButton.setOnClickListener { onEditClicked(book) }
             }
         }
     }
