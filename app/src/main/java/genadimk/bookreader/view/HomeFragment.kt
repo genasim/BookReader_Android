@@ -12,6 +12,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import genadimk.bookreader.BookReaderApplication
+import genadimk.bookreader.R
 import genadimk.bookreader.databinding.FragmentHomeBinding
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
 import genadimk.bookreader.viewmodels.HomeViewModel
@@ -48,8 +49,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        AppFloatingButton.init(viewModel, getContent)
-        AppFloatingButton.enable()
+        AppFloatingButton.enable(viewModel, getContent, this::showConfirmationBox)
 
         return root
     }
@@ -92,17 +92,16 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private fun showConfirmationBox() {
+    private fun showConfirmationBox(callback: () -> Unit) {
         MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Dialog alert title")
+            .setTitle(R.string.confirm_remove_title)
             .setCancelable(true)
-            .setMessage("Are you sure???")
-            .setPositiveButton("Yes") { _, _ ->
-                for (book in viewModel.getBookList()) {
-                    viewModel.removeBook(book)
-                }
+            .setMessage(R.string.confirm_remove_message)
+//            .setView -> to provide custom layout
+            .setPositiveButton(R.string.confirm_remove_yes_button) { _, _ ->
+                callback.invoke()
             }
-            .setNeutralButton("Cancel") { _, _ -> }
+            .setNeutralButton(R.string.confirm_remove_cancel_button) { _, _ -> }
             .show()
     }
 }

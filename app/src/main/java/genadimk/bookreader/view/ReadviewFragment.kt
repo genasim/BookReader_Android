@@ -57,7 +57,7 @@ class ReadviewFragment : Fragment() {
                     viewModel.refreshCurrentBook()
 
                 observe(viewLifecycleOwner) {
-                    renderPdf(it)
+                    renderPdf(it!!)
                 }
             }
         } catch (ex: NullPointerException) {

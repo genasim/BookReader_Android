@@ -14,4 +14,11 @@
     <!--  Alert resources for Readview alert box  -->
     <string name="alert_no_current_book_message">You have not opened any books yet to read. Add one and start reading!</string>
     <string name="alert_no_current_book_title">No current book found</string>
+
+    <!--  Strings for confirmation of book removal  -->
+    <string name="confirm_remove_title">Remove books?</string>
+    <string name="confirm_remove_message">Proceeding will remove checked books from your list. Are you sure</string>
+    <string name="confirm_remove_cancel_button">Cancel</string>
+    <string name="confirm_remove_yes_button">Yes</string>
+
 </resources>
