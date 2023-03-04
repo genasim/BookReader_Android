@@ -14,6 +14,7 @@
     <!--  String resources for Readview alert box  -->
     <string name="alert_no_current_book_message">You have not opened any books yet to read. Add one and start reading!</string>
     <string name="alert_no_current_book_title">No current book found</string>
+    <string name="alert_no_current_book_ok">OK</string>
 
     <!--  String resources for Edit item alert vox  -->
     <string name="alert_edit_item_title">Edit book \n</string>

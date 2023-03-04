@@ -30,12 +30,12 @@ fun getFilename(contentResolver: ContentResolver, uri: Uri): String? {
             contentResolver.query(uri, null, null, null, null)?.use { cursor ->
                 cursor.moveToFirst()
                 val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                cursor.getString(nameIndex);
+                cursor.getString(nameIndex).substringBeforeLast('.');
             }
         }
         ContentResolver.SCHEME_FILE -> {
             uri.path?.let { path ->
-                File(path).name
+                File(path).name.substringBeforeLast('.')
             }
         }
         else -> null

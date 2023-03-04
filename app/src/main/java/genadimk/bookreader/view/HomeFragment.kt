@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -16,7 +17,9 @@ import genadimk.bookreader.BookReaderApplication
 import genadimk.bookreader.R
 import genadimk.bookreader.databinding.FragmentHomeBinding
 import genadimk.bookreader.utils.asBookEntry
+import genadimk.bookreader.view.dialog.EditBoxDialog
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
+import genadimk.bookreader.view.floatingButton.AppFloatingButton.Companion.buttonHandler
 import genadimk.bookreader.viewmodels.HomeViewModel
 import genadimk.bookreader.viewmodels.HomeViewModelFactory
 
@@ -27,7 +30,7 @@ class HomeFragment : Fragment() {
     /** This property is only valid between onCreateView and onDestroyView */
     private val binding get() = _binding!!
 
-    private val viewModel: HomeViewModel by activityViewModels {
+    val viewModel: HomeViewModel by activityViewModels {
         HomeViewModelFactory(
             (activity?.application as BookReaderApplication).repository
         )
@@ -51,7 +54,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        AppFloatingButton.enable(viewModel, getContent, this::showConfirmationBox)
+        AppFloatingButton.enable(this, getContent)
 
         return root
     }
@@ -77,10 +80,10 @@ class HomeFragment : Fragment() {
                 true
             },
             onEditClicked = { book ->
-                showEditBox {
+                EditBoxDialog {
                     val newBook = book.asBookEntry().copy(name = it?.text.toString())
                     viewModel.updateBook(newBook)
-                }
+                }.show(parentFragmentManager, "Edit text")
             }
         )
 
@@ -97,29 +100,5 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun showConfirmationBox(callback: () -> Unit) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.confirm_remove_title)
-            .setCancelable(true)
-            .setMessage(R.string.confirm_remove_message)
-//            .setView -> to provide custom layout
-            .setPositiveButton(R.string.confirm_remove_yes_button) { _, _ -> callback() }
-            .setNeutralButton(R.string.confirm_remove_cancel_button) { _, _ -> }
-            .show()
-    }
-
-    private fun showEditBox(callback: (TextInputEditText?) -> Unit) {
-        var editText: TextInputEditText? = null
-        val alert = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(R.string.alert_edit_item_title)
-            .setCancelable(true)
-            .setView(R.layout.dialog_edit_item)
-            .setPositiveButton(R.string.alert_edit_item_yes_button) { _, _ -> callback(editText) }
-            .setNeutralButton(R.string.confirm_remove_cancel_button) { _, _ -> }
-            .show()
-
-        editText = alert.findViewById(R.id.edit_item_field)
     }
 }

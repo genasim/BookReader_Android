@@ -3,6 +3,7 @@ package genadimk.bookreader.view.floatingButton
 import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import genadimk.bookreader.view.HomeFragment
 import genadimk.bookreader.viewmodels.HomeViewModel
 import kotlin.reflect.KFunction1
 
@@ -28,11 +29,11 @@ class AppFloatingButton {
                 }
             }
 
-        fun enable(viewModel: HomeViewModel, contentPicker: ActivityResultLauncher<Array<String>>, confirmFunc: KFunction1<() -> Unit, Unit>) {
+        fun enable(fragment: HomeFragment, contentPicker: ActivityResultLauncher<Array<String>>) {
             button?.visibility = View.VISIBLE
 
             buttonAdder = ButtonAdd(contentPicker)
-            buttonRemover = ButtonRemove(viewModel, confirmFunc)
+            buttonRemover = ButtonRemove(fragment)
         }
 
         fun disable() {

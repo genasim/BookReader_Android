@@ -60,10 +60,10 @@ class ReadviewFragment : Fragment() {
                 }
             }
         } catch (ex: Exception) {
-            showAlertBox {
+            NoCurrentBookDialog {
                 val action = ReadviewFragmentDirections.actionNavReadviewToNavHome()
                 findNavController().navigate(action)
-            }
+            }.show(parentFragmentManager, "No current Book Alert")
         }
 
     }
@@ -97,11 +97,4 @@ class ReadviewFragment : Fragment() {
 
         (activity as MainActivity).supportActionBar?.title = book.name
     }
-
-    private fun showAlertBox(callback: () -> Unit) = MaterialAlertDialogBuilder(requireActivity())
-        .setTitle(R.string.alert_no_current_book_title)
-        .setPositiveButton("OK") { _, _ -> callback.invoke() }
-        .setCancelable(true)
-        .setMessage(R.string.alert_no_current_book_message)
-        .show()
 }
