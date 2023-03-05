@@ -7,16 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.pdftron.pdf.PDFViewCtrl
 import com.pdftron.pdf.utils.AppUtils
 import genadimk.bookreader.BookReaderApplication
-import genadimk.bookreader.R
 import genadimk.bookreader.databinding.FragmentReadviewBinding
 import genadimk.bookreader.model.Book
+import genadimk.bookreader.view.dialog.NoCurrentBookDialog
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
 import genadimk.bookreader.viewmodels.ReadviewViewModel
 import genadimk.bookreader.viewmodels.ReadviewViewModelFactory
+
 
 class ReadviewFragment : Fragment() {
 
@@ -31,8 +30,6 @@ class ReadviewFragment : Fragment() {
         )
     }
 
-    lateinit var pdfViewCtrl: PDFViewCtrl
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,12 +41,12 @@ class ReadviewFragment : Fragment() {
 
         AppFloatingButton.disable()
 
+        AppUtils.setupPDFViewCtrl(binding.pdfView)
+
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        pdfViewCtrl = view.findViewById(R.id.pdfView)
-
         try {
             with(viewModel.currentBook) {
                 if (this.value == null)
@@ -65,7 +62,6 @@ class ReadviewFragment : Fragment() {
                 findNavController().navigate(action)
             }.show(parentFragmentManager, "No current Book Alert")
         }
-
     }
 
     override fun onDestroyView() {
@@ -77,20 +73,25 @@ class ReadviewFragment : Fragment() {
         super.onStop()
         viewModel.currentBook.value?.let {
             with(it) {
-                page = pdfViewCtrl.currentPage
+                page = binding.pdfView.currentPage
                 viewModel.setCurrentPage(this)
             }
         }
     }
 
     private fun renderPdf(book: Book) {
-        AppUtils.setupPDFViewCtrl(pdfViewCtrl)
-
         try {
-            pdfViewCtrl.apply {
+            binding.pdfView.apply {
                 openPDFUri(book.uri, null)
                 currentPage = book.page
             }
+
+            binding.thumbnailSlider.visibility = when (binding.pdfView.pageCount) {
+                1 -> View.GONE
+                else -> View.VISIBLE
+            }
+            binding.thumbnailSlider.refreshPageCount()
+
         } catch (ex: Exception) {
             ex.printStackTrace();
         }

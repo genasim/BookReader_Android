@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".view.ReadviewFragment">
 
     <com.pdftron.pdf.PDFViewCtrl
@@ -10,4 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical|horizontal" />
-</FrameLayout>
+
+    <com.pdftron.pdf.controls.ThumbnailSlider
+        android:id="@+id/thumbnailSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:colorBackground="@color/opaque"
+        app:leftMenuItemDrawable="@null"
+        app:pdfviewctrlId="@id/pdfView"
+        app:rightMenuItemDrawable="@null" />
+
+</RelativeLayout>
