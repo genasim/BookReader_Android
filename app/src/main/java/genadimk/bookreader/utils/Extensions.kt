@@ -17,9 +17,7 @@ fun Book.asBookEntry(): BookEntry =
     )
 
 
-fun BookEntry.asBook(): Book =
-    Book.Builder(this).build()
-
+fun BookEntry.asBook(): Book = Book(this)
 
 val Any.TAG: String
     get() = javaClass.simpleName

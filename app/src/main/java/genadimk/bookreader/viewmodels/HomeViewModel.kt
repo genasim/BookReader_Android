@@ -20,7 +20,7 @@ class HomeViewModel(private val repository: BookRepository) :
 
     fun updateBookList(bookEntries: List<BookEntry>): List<Book> {
         val newList = mutableListOf<Book>()
-        bookEntries.forEach { newList.add(Book.Builder(it).build()) }
+        bookEntries.forEach { newList.add(Book(it)) }
 
         _bookList.apply {
             clear()
@@ -33,8 +33,7 @@ class HomeViewModel(private val repository: BookRepository) :
     fun noBooksAreChecked(): Boolean =
         _bookList.all { it.card?.isChecked == false }
 
-    fun addBook(uri: Uri, contentResolver: ContentResolver) = viewModelScope.launch {
-        val filename = getFilename(contentResolver, uri)
+    fun addBook(uri: Uri, filename: String?) = viewModelScope.launch {
         filename?.let {
             val newEntry = repository.createNewBookEntry(uri, it)
             repository.insert(newEntry)

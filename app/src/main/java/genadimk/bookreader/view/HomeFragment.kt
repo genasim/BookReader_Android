@@ -17,6 +17,7 @@ import genadimk.bookreader.BookReaderApplication
 import genadimk.bookreader.R
 import genadimk.bookreader.databinding.FragmentHomeBinding
 import genadimk.bookreader.utils.asBookEntry
+import genadimk.bookreader.utils.getFilename
 import genadimk.bookreader.view.dialog.EditBoxDialog
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
 import genadimk.bookreader.view.floatingButton.AppFloatingButton.Companion.buttonHandler
@@ -42,7 +43,8 @@ class HomeFragment : Fragment() {
                 requireActivity().contentResolver.takePersistableUriPermission(
                     uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
-                viewModel.addBook(uri, requireActivity().contentResolver)
+                val filename = getFilename(requireActivity().contentResolver, uri)
+                viewModel.addBook(uri, filename)
             }
         }
 
