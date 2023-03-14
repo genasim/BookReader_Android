@@ -1,5 +1,6 @@
 package genadimk.bookreader.viewmodels
 
+import android.content.Context
 import androidx.lifecycle.*
 import genadimk.bookreader.model.Book
 import genadimk.bookreader.model.BookRepository
@@ -10,10 +11,10 @@ class ReadviewViewModel(private val repository: BookRepository) : ViewModel() {
 
     val currentBook = repository.currentBook
 
-    fun refreshCurrentBook() = runBlocking {
+    fun refreshCurrentBook(context: Context) = runBlocking {
         try {
             val result = repository.getCurrent()
-            repository.updateCurrentBook(result.asBook(), null)
+            repository.updateCurrentBook(result.asBook(context), null)
         } catch (ex: Exception) {
             throw NullPointerException()
         }

@@ -50,7 +50,7 @@ class ReadviewFragment : Fragment() {
         try {
             with(viewModel.currentBook) {
                 if (this.value == null)
-                    viewModel.refreshCurrentBook()
+                    viewModel.refreshCurrentBook(requireContext())
 
                 observe(viewLifecycleOwner) {
                     renderPdf(it!!)

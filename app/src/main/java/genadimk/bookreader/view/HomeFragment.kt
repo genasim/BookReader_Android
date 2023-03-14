@@ -86,7 +86,7 @@ class HomeFragment : Fragment() {
 
         binding.homeListView.adapter = adapter
         viewModel.allBookEntriesLive.observe(viewLifecycleOwner) { bookEntries ->
-            val newList = viewModel.updateBookList(bookEntries)
+            val newList = viewModel.updateBookList(bookEntries, requireContext())
             adapter.submitList(newList)
             AppFloatingButton.apply { buttonHandler = buttonAdder }
         }

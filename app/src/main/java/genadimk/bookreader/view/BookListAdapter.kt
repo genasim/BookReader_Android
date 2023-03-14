@@ -36,7 +36,7 @@ class BookListAdapter(
         ) {
             binding.apply {
                 bookName.text = book.name
-                bookCoverImage.setImageResource(book.cover)
+                bookCoverImage.setImageBitmap(book.cover)
                 book.card = bookItemCard
                 book.card?.isChecked = false
                 bookItemCard.setOnClickListener { onItemClicked(book) }

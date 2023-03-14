@@ -1,6 +1,7 @@
 package genadimk.bookreader.utils
 
 import android.content.ContentResolver
+import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.OpenableColumns
@@ -18,7 +19,7 @@ fun Book.asBookEntry(): BookEntry =
         current = this.current
     )
 
-fun BookEntry.asBook(): Book = Book(this)
+fun BookEntry.asBook(context: Context): Book = Book(this, context)
 
 val Any.TAG: String
     get() = javaClass.simpleName
