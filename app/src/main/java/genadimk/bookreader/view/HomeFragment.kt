@@ -8,19 +8,14 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputEditText
 import genadimk.bookreader.BookReaderApplication
-import genadimk.bookreader.R
 import genadimk.bookreader.databinding.FragmentHomeBinding
 import genadimk.bookreader.utils.asBookEntry
 import genadimk.bookreader.utils.getFilename
 import genadimk.bookreader.view.dialog.EditBoxDialog
 import genadimk.bookreader.view.floatingButton.AppFloatingButton
-import genadimk.bookreader.view.floatingButton.AppFloatingButton.Companion.buttonHandler
 import genadimk.bookreader.viewmodels.HomeViewModel
 import genadimk.bookreader.viewmodels.HomeViewModelFactory
 
@@ -43,7 +38,7 @@ class HomeFragment : Fragment() {
                 requireActivity().contentResolver.takePersistableUriPermission(
                     uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
-                val filename = getFilename(requireActivity().contentResolver, uri)
+                val filename = uri.getFilename(requireActivity().contentResolver)
                 viewModel.addBook(uri, filename)
             }
         }

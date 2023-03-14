@@ -17,7 +17,7 @@ class BookRepository(private val application: Application) {
     private val _currentBook = MutableLiveData<Book?>()
     val currentBook: LiveData<Book?> = _currentBook
 
-    fun updateCurrentBook(newBook: Book?, oldBook: Book?) = runBlocking {
+    suspend fun updateCurrentBook(newBook: Book?, oldBook: Book?) = withContext(Dispatchers.IO) {
         when (newBook) {
             null -> _currentBook.postValue(null)
             else -> {

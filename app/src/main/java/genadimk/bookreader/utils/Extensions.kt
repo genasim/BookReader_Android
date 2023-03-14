@@ -1,8 +1,10 @@
 package genadimk.bookreader.utils
 
 import android.content.ContentResolver
+import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.OpenableColumns
+import com.pdftron.pdf.PDFDoc
 import genadimk.bookreader.model.Book
 import genadimk.bookreader.model.room.BookEntry
 import java.io.File
@@ -16,23 +18,22 @@ fun Book.asBookEntry(): BookEntry =
         current = this.current
     )
 
-
 fun BookEntry.asBook(): Book = Book(this)
 
 val Any.TAG: String
     get() = javaClass.simpleName
 
-fun getFilename(contentResolver: ContentResolver, uri: Uri): String? {
-    return when (uri.scheme) {
+fun Uri.getFilename(contentResolver: ContentResolver): String? {
+    return when (scheme) {
         ContentResolver.SCHEME_CONTENT -> {
-            contentResolver.query(uri, null, null, null, null)?.use { cursor ->
+            contentResolver.query(this, null, null, null, null)?.use { cursor ->
                 cursor.moveToFirst()
                 val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
                 cursor.getString(nameIndex).substringBeforeLast('.');
             }
         }
         ContentResolver.SCHEME_FILE -> {
-            uri.path?.let { path ->
+            path?.let { path ->
                 File(path).name.substringBeforeLast('.')
             }
         }

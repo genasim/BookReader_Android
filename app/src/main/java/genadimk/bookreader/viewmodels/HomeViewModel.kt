@@ -1,12 +1,10 @@
 package genadimk.bookreader.viewmodels
 
-import android.content.ContentResolver
 import android.net.Uri
 import androidx.lifecycle.*
 import genadimk.bookreader.model.Book
-import genadimk.bookreader.model.room.BookEntry
 import genadimk.bookreader.model.BookRepository
-import genadimk.bookreader.utils.getFilename
+import genadimk.bookreader.model.room.BookEntry
 import kotlinx.coroutines.*
 
 class HomeViewModel(private val repository: BookRepository) :
@@ -21,7 +19,6 @@ class HomeViewModel(private val repository: BookRepository) :
     fun updateBookList(bookEntries: List<BookEntry>): List<Book> {
         val newList = mutableListOf<Book>()
         bookEntries.forEach { newList.add(Book(it)) }
-
         _bookList.apply {
             clear()
             addAll(newList)

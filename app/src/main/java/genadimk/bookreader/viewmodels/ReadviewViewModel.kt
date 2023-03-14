@@ -19,7 +19,7 @@ class ReadviewViewModel(private val repository: BookRepository) : ViewModel() {
         }
     }
 
-    fun setCurrentPage(book: Book) {
+    fun setCurrentPage(book: Book) = viewModelScope.launch {
         repository.updateCurrentBook(book, null)
     }
 }
