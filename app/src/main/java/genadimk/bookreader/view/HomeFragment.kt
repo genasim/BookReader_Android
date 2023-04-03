@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import genadimk.bookreader.BookReaderApplication
+import genadimk.bookreader.R
 import genadimk.bookreader.databinding.FragmentHomeBinding
 import genadimk.bookreader.utils.asBookEntry
 import genadimk.bookreader.utils.getFilename
@@ -39,7 +41,15 @@ class HomeFragment : Fragment() {
                     uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
                 val filename = uri.getFilename(requireActivity().contentResolver)
-                viewModel.addBook(uri, filename)
+                if (!viewModel.addBook(uri, filename)) {
+                    Snackbar
+                        .make(
+                            requireView(),
+                            R.string.duplicate_book,
+                            Snackbar.LENGTH_SHORT
+                        )
+                        .show()
+                }
             }
         }
 

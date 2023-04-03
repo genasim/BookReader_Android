@@ -8,8 +8,8 @@ interface BookDao {
     @Query("SELECT * FROM books ORDER BY name ASC")
     fun getAllBooks(): Flow<List<BookEntry>>
 
-    @Query("SELECT * FROM books WHERE id = :id")
-    fun getBook(id: Int): BookEntry
+    @Query("SELECT * FROM books WHERE uri = :uri")
+    fun getBook(uri: String): BookEntry?
 
     @Query("SELECT * FROM books WHERE current = 1")
     fun getCurrentBook(): BookEntry

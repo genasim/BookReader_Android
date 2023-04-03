@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import genadimk.bookreader.model.Book
 import genadimk.bookreader.model.BookRepository
 import genadimk.bookreader.model.room.BookEntry
+import genadimk.bookreader.utils.asBookEntry
 import kotlinx.coroutines.*
 
 class HomeViewModel(private val repository: BookRepository) :
@@ -31,19 +32,25 @@ class HomeViewModel(private val repository: BookRepository) :
     fun noBooksAreChecked(): Boolean =
         _bookList.all { it.card?.isChecked == false }
 
-    fun addBook(uri: Uri, filename: String?) = viewModelScope.launch {
+    fun addBook(uri: Uri, filename: String?) = runBlocking {
+        var result = true
         filename?.let {
             val newEntry = repository.createNewBookEntry(uri, it)
-            repository.insert(newEntry)
+            val entry = repository.getItem(newEntry)
+            when (entry == null) {
+                true -> repository.insert(newEntry)
+                false -> result = false
+            }
         }
+        result
     }
 
     fun removeBook(book: Book) = runBlocking {
         if (book.current == 1)
             repository.updateCurrentBook(null, null)
 
-        val result = repository.getItem(book)
-        repository.delete(result)
+        val result = repository.getItem(book.asBookEntry())
+        repository.delete(result!!)
     }
 
     fun updateCurrentBook(newBook: Book) = viewModelScope.launch {

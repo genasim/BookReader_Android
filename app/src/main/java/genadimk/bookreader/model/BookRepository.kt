@@ -8,7 +8,6 @@ import genadimk.bookreader.model.room.BookDatabase
 import genadimk.bookreader.model.room.BookEntry
 import genadimk.bookreader.utils.asBookEntry
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 class BookRepository(private val application: Application) {
@@ -56,8 +55,8 @@ class BookRepository(private val application: Application) {
         database.bookDao.delete(entry)
     }
 
-    suspend fun getItem(book: Book) = withContext(Dispatchers.IO) {
-        database.bookDao.getBook(book.id)
+    suspend fun getItem(entry: BookEntry) = withContext(Dispatchers.IO) {
+        database.bookDao.getBook(entry.uri)
     }
 
     suspend fun getCurrent() = withContext(Dispatchers.IO) {

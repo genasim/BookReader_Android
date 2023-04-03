@@ -6,22 +6,23 @@
     <string name="nav_header_subtitle">Bringing books to apps</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+    <string name="duplicate_book">You already have this book in your list</string>
 
     <!--  Navigation Drawer item names  -->
     <string name="menu_home">Home</string>
     <string name="menu_readview">Readview</string>
 
-    <!--  String resources for Readview alert box  -->
+    <!--  String resources for Readview alert box Dialogue -->
     <string name="alert_no_current_book_message">You have not opened any books yet to read. Add one and start reading!</string>
     <string name="alert_no_current_book_title">No current book found</string>
     <string name="alert_no_current_book_ok">OK</string>
 
-    <!--  String resources for Edit item alert vox  -->
+    <!--  String resources for Edit item alert box Dialogue  -->
     <string name="alert_edit_item_title">Edit book \n</string>
     <string name="alert_edit_item_hint">Enter new name for book</string>
     <string name="alert_edit_item_yes_button">Edit</string>
 
-    <!--  Strings for confirmation of book removal  -->
+    <!--  Strings for confirmation of book removal Dialogue  -->
     <string name="confirm_remove_title">Remove books?</string>
     <string name="confirm_remove_message">Proceeding will remove checked books from your list. Are you sure</string>
     <string name="confirm_remove_cancel_button">Cancel</string>

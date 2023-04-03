@@ -2,10 +2,8 @@ package genadimk.bookreader.utils
 
 import android.content.ContentResolver
 import android.content.Context
-import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.OpenableColumns
-import com.pdftron.pdf.PDFDoc
 import genadimk.bookreader.model.Book
 import genadimk.bookreader.model.room.BookEntry
 import java.io.File
