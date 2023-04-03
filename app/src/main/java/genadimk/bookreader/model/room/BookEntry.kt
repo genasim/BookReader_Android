@@ -5,6 +5,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * Base book object that is stored in database as a record
+ * */
 @Entity(tableName = "books")
 data class BookEntry(
     @PrimaryKey(autoGenerate = true)

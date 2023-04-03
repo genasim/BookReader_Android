@@ -16,6 +16,11 @@ class BookRepository(private val application: Application) {
     private val _currentBook = MutableLiveData<Book?>()
     val currentBook: LiveData<Book?> = _currentBook
 
+    /**
+     * @param newBook if *null*, then set [currentBook] value to null - otherwise
+     * set this book as *current*
+     * @param oldBook if *null*, then do nothing - otherwise set "current" flag to 0
+     * */
     suspend fun updateCurrentBook(newBook: Book?, oldBook: Book?) = withContext(Dispatchers.IO) {
         when (newBook) {
             null -> _currentBook.postValue(null)

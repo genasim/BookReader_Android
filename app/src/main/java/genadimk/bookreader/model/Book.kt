@@ -7,6 +7,11 @@ import com.google.android.material.card.MaterialCardView
 import genadimk.bookreader.model.room.BookEntry
 import genadimk.bookreader.utils.FrontPageFactory
 
+/**
+ * Wrapper object for [BookEntry], meant to hold all non-persistent
+ * data for the books. This class should be used for book-management
+ * apart from book-creation
+ * */
 class Book constructor(
     bookEntry: BookEntry,
     context: Context,
@@ -20,5 +25,4 @@ class Book constructor(
 
     var card: MaterialCardView? = null
     var isChecked: Boolean = false
-
 }

@@ -12,12 +12,8 @@ class ReadviewViewModel(private val repository: BookRepository) : ViewModel() {
     val currentBook = repository.currentBook
 
     fun refreshCurrentBook(context: Context) = runBlocking {
-        try {
-            val result = repository.getCurrent()
-            repository.updateCurrentBook(result.asBook(context), null)
-        } catch (ex: Exception) {
-            throw NullPointerException()
-        }
+        val result = repository.getCurrent()
+        repository.updateCurrentBook(result.asBook(context), null)
     }
 
     fun setCurrentPage(book: Book) = viewModelScope.launch {

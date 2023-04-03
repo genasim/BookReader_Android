@@ -18,6 +18,11 @@ class HomeViewModel(private val repository: BookRepository) :
     private val _bookList: MutableList<Book> = mutableListOf()
     fun getBookList() = _bookList.toList()
 
+    /**
+     * Creates a new list of books to be used for displaying, using
+     * the given [BookEntry] list
+     * @return the newly created list of books
+     * */
     fun updateBookList(bookEntries: List<BookEntry>, context: Context): List<Book> {
         val newList = mutableListOf<Book>()
         bookEntries.forEach { newList.add(Book(it, context)) }
@@ -32,6 +37,12 @@ class HomeViewModel(private val repository: BookRepository) :
     fun noBooksAreChecked(): Boolean =
         _bookList.all { it.card?.isChecked == false }
 
+    /**
+     * Add a new [BookEntry] created from the given uri
+     * @param uri address of the book on the device
+     * @param filename name for the book
+     * @return whether a duplicate was found
+     * */
     fun addBook(uri: Uri, filename: String?) = runBlocking {
         var result = true
         filename?.let {
