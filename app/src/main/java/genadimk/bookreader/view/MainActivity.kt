@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.appBarMain.toolbar)
 
         AppFloatingButton.button = binding.appBarMain.floatingButton
+        AppFloatingButton.refresh()
 
         val drawerLayout: DrawerLayout = binding.drawerLayout
         navController = findNavController(R.id.nav_host_fragment)

@@ -13,20 +13,11 @@ class AppFloatingButton {
         lateinit var buttonAdder: ButtonHandler
 
         var button: FloatingActionButton? = null
-            set(value) {
-                if (field == null) field = value
-                else return
-            }
 
         var buttonHandler: ButtonHandler? = null
             set(value) {
                 field = value ?: return
-                button?.apply {
-                    setImageResource(value.imageRes)
-                    setOnClickListener {
-                        value.clickButton()
-                    }
-                }
+                refresh()
             }
 
         fun enable(fragment: HomeFragment, contentPicker: ActivityResultLauncher<Array<String>>) {
@@ -38,6 +29,18 @@ class AppFloatingButton {
 
         fun disable() {
             button?.visibility = View.GONE
+        }
+
+        fun refresh() {
+            if (buttonHandler == null)
+                return
+
+            button?.apply {
+                setImageResource(buttonHandler!!.imageRes)
+                setOnClickListener {
+                    buttonHandler!!.clickButton()
+                }
+            }
         }
     }
 }
